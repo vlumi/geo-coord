@@ -111,9 +111,9 @@ const latitudeToDMSH = (decimalDegrees) => {
   // TODO: input check
   const sign = Math.sign(decimalDegrees);
   const absDegrees = Math.abs(decimalDegrees);
-  const degrees = Math.floor(absDegrees);
-  const minutes = Math.floor(60 * (absDegrees - degrees));
-  const seconds = Math.round(3600 * (absDegrees - degrees) - 60 * minutes);
+  const degrees = Math.floor(round(absDegrees));
+  const minutes = Math.floor(round(60 * (absDegrees - degrees)));
+  const seconds = round(3600 * (absDegrees - degrees) - 60 * minutes);
   const hemisphere = Object.is(sign, 0) || sign > 0 ? "N" : "S";
   return {
     degrees,
@@ -144,9 +144,9 @@ const longitudeToDMSH = (decimalDegrees) => {
   // TODO: input check
   const sign = Math.sign(decimalDegrees);
   const absDegrees = Math.abs(decimalDegrees);
-  const degrees = Math.floor(absDegrees);
-  const minutes = Math.floor(60 * (absDegrees - degrees));
-  const seconds = Math.round(3600 * (absDegrees - degrees) - 60 * minutes);
+  const degrees = Math.floor(round(absDegrees));
+  const minutes = Math.floor(round(60 * (absDegrees - degrees)));
+  const seconds = round(3600 * (absDegrees - degrees) - 60 * minutes);
   const hemisphere = Object.is(sign, 0) || sign > 0 ? "E" : "W";
   return {
     degrees,
@@ -154,6 +154,10 @@ const longitudeToDMSH = (decimalDegrees) => {
     seconds,
     hemisphere,
   };
+};
+const round = (num) => {
+  const PRECISION = 10 ** 9;
+  return Math.round(num * PRECISION) / PRECISION;
 };
 
 const convertToDecimal = (degrees, minutes, seconds, negative) => {
