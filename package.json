@@ -2,6 +2,14 @@
   "name": "geo-coord",
   "version": "0.0.2",
   "description": "Utilities for geographic coordinate data.",
+  "keywords": [
+    "geographic",
+    "geo",
+    "coordinates",
+    "coords",
+    "coord",
+    "conversion"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
