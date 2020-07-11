@@ -1,7 +1,7 @@
 {
   "name": "geo-coord",
   "version": "0.0.1",
-  "description": "",
+  "description": "Utilities for geographic coordinate data.",
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
