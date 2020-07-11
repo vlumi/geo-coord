@@ -5,7 +5,42 @@ This library contains utilities for managing geographic coordinate data.
 ## Usage
 
 ``` 
-const geoCoord = require("geo-coord");
+const { GeoCoord } = require("geo-coord");
+```
+
+The constructor accepts various ways pass the coordinates. The following examples all create a GeoCoord object at the origo.
+
+* Pass an object with `latitude` and `longitude` properties holding the coordinates in individual properties:
+
+``` 
+new GeoCoord({
+    latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+    longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+});
+```
+
+* Pass the objects for latitude and longitude as separate parameters, in respective order:
+
+``` 
+new GeoCoord(
+    { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+    { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+)
+```
+
+* Pass an object with `latitude` and `longitude` properties holding the decimal values:
+
+``` 
+new GeoCoord({
+    latitude: 0,
+    longitude: 0,
+})
+```
+
+* Pass the decimal values for latitude and longitude as separate parameters, in respective order:
+
+``` 
+new GeoCoord(0, 0)
 ```
 
 ## Conversion
