@@ -1,0 +1,16 @@
+{
+  "name": "geo-coord",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose",
+    "lint": "eslint ."
+  },
+  "author": "Ville Misaki",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "jest": "^26.1.0"
+  }
+}
