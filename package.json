@@ -12,5 +12,9 @@
   "devDependencies": {
     "eslint": "^7.4.0",
     "jest": "^26.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:vlumi/geo-coord"
   }
 }
