@@ -1,16 +1,16 @@
 const { GeoCoord } = require("./lib/geo-coord");
 const {
-  latitudeToDecimal,
-  latitudeToDMSH,
-  longitudeToDecimal,
-  longitudeToDMSH,
+  latitudeToDD,
+  latitudeToDMS,
+  longitudeToDD,
+  longitudeToDMS,
 } = require("./lib/convert");
 
 module.exports = {
   GeoCoord,
 
-  latitudeToDecimal,
-  latitudeToDMSH,
-  longitudeToDecimal,
-  longitudeToDMSH,
+  latitudeToDD,
+  latitudeToDMS,
+  longitudeToDD,
+  longitudeToDMS,
 };
