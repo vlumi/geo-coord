@@ -76,5 +76,91 @@ describe("To String", () => {
         ).toString()
       ).toBe("33°35′0″N 130°24′0″E"));
   });
-  //33°35′N 130°24′E
+});
+describe("To Decimal", () => {
+  const normalizeResult = (coordinates) => {
+    const normalize = (value) => Math.round(value * 1000000) / 1000000;
+    return {
+      latitude: normalize(coordinates.latitude),
+      longitude: normalize(coordinates.longitude),
+    };
+  };
+  test("0°0′0″N 0°0′0″E", () =>
+    expect(
+      normalizeResult(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+        ).toDecimal()
+      )
+    ).toEqual({ latitude: 0, longitude: 0 }));
+  test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
+    expect(
+      normalizeResult(
+        new GeoCoord(
+          { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
+          { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
+        ).toDecimal()
+      )
+    ).toEqual({ latitude: 60.170833, longitude: 24.9375 }));
+  test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
+    expect(
+      normalizeResult(
+        new GeoCoord(
+          { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
+          { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
+        ).toDecimal()
+      )
+    ).toEqual({ latitude: 52.083333, longitude: 4.316667 }));
+  test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
+    expect(
+      normalizeResult(
+        new GeoCoord(
+          { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
+          { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
+        ).toDecimal()
+      )
+    ).toEqual({ latitude: 33.583333, longitude: 130.4 }));
+});
+describe("To DMSH", () => {
+  test("0°0′0″N 0°0′0″E", () =>
+    expect(
+      new GeoCoord(
+        { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+      ).toDMSH()
+    ).toEqual({
+      latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+      longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+    }));
+  test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
+    expect(
+      new GeoCoord(
+        { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
+        { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
+      ).toDMSH()
+    ).toEqual({
+      latitude: { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
+      longitude: { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
+    }));
+  test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
+    expect(
+      new GeoCoord(
+        { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
+        { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
+      ).toDMSH()
+    ).toEqual({
+      latitude: { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
+      longitude: { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" },
+    }));
+  test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
+    expect(
+      new GeoCoord(
+        { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
+        { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
+      ).toDMSH()
+    ).toEqual({
+      latitude: { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
+      longitude: { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" },
+    }));
 });
