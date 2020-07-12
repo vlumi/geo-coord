@@ -1,6 +1,11 @@
 # geo-coord
 
-This library contains utilities for managing geographic coordinate data.
+This library contains utilities for managing geographic coordinate values.
+
+The current functionality includes:
+
+* Parsing and normalizing coordinate values into decimal degrees
+* Converting the values to normalized DMS (degrees, minutes, seconds) with hemisphere information
 
 ## Usage
 
@@ -14,7 +19,21 @@ const { GeoCoord } = require("geo-coord");
 
 The constructor accepts various ways pass the coordinates. The following examples all create a GeoCoord object at the origo.
 
-* Pass an object with `latitude` and `longitude` properties holding the coordinates in individual properties:
+* Pass a string with the DMS latitude and longitude, each token separated by a character, in the respective order:
+
+``` 
+new GeoCoord("0°0′0″N 0°0′0″E");
+```
+
+* Pass the DMS values of longitude and latitude as discrete values, in the respective order, possibly omitting any unnecessary values from the tail:
+
+``` 
+new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E");
+new GeoCoord(0, "N", 0, 0, "E");
+new GeoCoord(0, "N", 0, "E");
+```
+
+* Pass an object with `latitude` and `longitude` properties holding the DMS values in individual properties:
 
 ``` 
 new GeoCoord({
@@ -29,19 +48,19 @@ new GeoCoord({
 new GeoCoord(
   { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
   { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-)
+);
 ```
 
-* Pass an object with `latitude` and `longitude` properties holding the decimal values:
+* Pass an object with `latitude` and `longitude` properties holding the DD values:
 
 ``` 
 new GeoCoord({
   latitude: 0,
   longitude: 0,
-})
+});
 ```
 
-* Pass the decimal values for latitude and longitude as separate parameters, in respective order:
+* Pass the DD values for latitude and longitude as separate parameters, in respective order:
 
 ``` 
 new GeoCoord(0, 0)
@@ -52,13 +71,13 @@ new GeoCoord(0, 0)
 Returns the coordinates in a full string representation, in the format:
 
 ``` 
-<d>° <m>′ <s>″ <H> <d>° <m′ <s>″ <E>
+<d>°<m>′<s>″<H> <d>°<m>′<s>″<E>
 ```
 
 ##### Examples
 
 ``` 
-// Returns: "0° 0′ 0″ N 0° 0′ 0″ E"
+// Returns: "0°0′0″N 0°0′0″E"
 new GeoCoord(0, 0).toString();
 
 // Returns: "1°2′3″N 4°5′6″E"
@@ -72,6 +91,15 @@ new GeoCoord(
   { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
   { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
 ).toString();
+
+// Returns: "60°10′15″N 24°56′15″E"
+new GeoCoord("60°10′15″N 24°56′15″E").toString(); 
+
+// Returns: "60°10′15″N 24°56′15″E"
+new GeoCoord("60 10 15 N 24 56 15 E").toString(); 
+
+// Returns: "60°10′15″N 24°56′15″E"
+new GeoCoord(60, 10, 15, "N", 24, 56, 15, "E").toString(); 
 ```
 
 #### to()
@@ -83,19 +111,21 @@ Returns the coordinates in decimal degrees, in the format:
   latitude: <d.d>
   longitude: <d.d>
 } 
+
 ```
 
 ##### Examples
 
 ``` 
 // Returns: { latitude: 0, longitude: 0 }
-new GeoCoord(0, 0).toDD();
+new GeoCoord(0, 0).toDD(); 
 
 // Returns: { latitude: 60.170833333333334, longitude: 24.9375 }
 new GeoCoord(
-  { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
+  { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" }, 
   { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-).toDD();
+).toDD(); 
+
 ```
 
 #### toDMS()
@@ -103,31 +133,32 @@ new GeoCoord(
 ``` 
 // Returns:
 //  {
-//   latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-//   longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+//   latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" }, 
+//   longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }, 
 // }
-new GeoCoord(0, 0).toDMS();
+new GeoCoord(0, 0).toDMS(); 
 
 // Returns:
 //  {
-//   latitude: { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
-//   longitude: { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
+//   latitude: { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" }, 
+//   longitude: { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }, 
 // }
 new GeoCoord(
-  { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
+  { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" }, 
   { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-).toDMS();
+).toDMS(); 
+
 ```
 
 ### Conversion Functions
 
 ``` 
 const {
-  latitudeToDD,
-  latitudeToDMS,
-  longitudeToDD,
-  longitudeToDMS,
-} = require("geo-coord");
+  latitudeToDD, 
+  latitudeToDMS, 
+  longitudeToDD, 
+  longitudeToDMS, 
+} = require("geo-coord"); 
 
 ```
 
