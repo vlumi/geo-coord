@@ -26,6 +26,12 @@ describe("Parse string", () => {
       expect(that.latitude).toBe(1);
       expect(that.longitude).toBe(2);
     });
+    test("-1° -2°", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      parseString(that, "-1° -2°");
+      expect(that.latitude).toBe(-1);
+      expect(that.longitude).toBe(-2);
+    });
   });
   describe("DMS string", () => {
     test("30°30′36″N 20°15′36″E", () => {
@@ -57,6 +63,12 @@ describe("Parse string", () => {
       parseString(that, "30°30.6′0″N 20°15.6′0″E");
       expect(that.latitude).toBe(30.51);
       expect(that.longitude).toBe(20.26);
+    });
+    test("1°N 2°E", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      parseString(that, "1°S 2°W");
+      expect(that.latitude).toBe(-1);
+      expect(that.longitude).toBe(-2);
     });
   });
 });
