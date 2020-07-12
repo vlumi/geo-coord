@@ -1,8 +1,8 @@
 const {
   latitudeToDecimal,
-  latitudeToDMSH,
+  latitudeToDMS,
   longitudeToDecimal,
-  longitudeToDMSH,
+  longitudeToDMS,
 } = require("../../lib/convert");
 
 describe("Latitude to decimal", () => {
@@ -50,31 +50,31 @@ describe("Latitude to decimal", () => {
       expect(latitudeToDecimal(20, 15, 36, "S")).toBe(-20.26));
   });
 });
-describe("Latitude to DMSH", () => {
+describe("Latitude to DMS", () => {
   describe("Extremes", () => {
     test("0° 0′ 0″ N", () =>
-      expect(latitudeToDMSH(0)).toEqual({
+      expect(latitudeToDMS(0)).toEqual({
         degrees: 0,
         minutes: 0,
         seconds: 0,
         hemisphere: "N",
       }));
     test("0° 0′ 0″ S", () =>
-      expect(latitudeToDMSH(-0)).toEqual({
+      expect(latitudeToDMS(-0)).toEqual({
         degrees: 0,
         minutes: 0,
         seconds: 0,
         hemisphere: "S",
       }));
     test("90° 0′ 0″ N", () =>
-      expect(latitudeToDMSH(90)).toEqual({
+      expect(latitudeToDMS(90)).toEqual({
         degrees: 90,
         minutes: 0,
         seconds: 0,
         hemisphere: "N",
       }));
     test("90° 0′ 0″ S", () =>
-      expect(latitudeToDMSH(-90)).toEqual({
+      expect(latitudeToDMS(-90)).toEqual({
         degrees: 90,
         minutes: 0,
         seconds: 0,
@@ -82,54 +82,54 @@ describe("Latitude to DMSH", () => {
       }));
   });
   describe("Excess", () => {
-    test("91° 0′ 0″ N", () => expect(() => latitudeToDMSH(91)).toThrow());
-    test("91° 0′ 0″ N", () => expect(() => latitudeToDMSH(-91)).toThrow());
+    test("91° 0′ 0″ N", () => expect(() => latitudeToDMS(91)).toThrow());
+    test("91° 0′ 0″ N", () => expect(() => latitudeToDMS(-91)).toThrow());
   });
   describe("Examples", () => {
     test("10° 15′ 0″ N", () =>
-      expect(latitudeToDMSH(10.25)).toEqual({
+      expect(latitudeToDMS(10.25)).toEqual({
         degrees: 10,
         minutes: 15,
         seconds: 0,
         hemisphere: "N",
       }));
     test("50° 30.6′ 0″ N", () =>
-      expect(latitudeToDMSH(50.51)).toEqual({
+      expect(latitudeToDMS(50.51)).toEqual({
         degrees: 50,
         minutes: 30,
         seconds: 36,
         hemisphere: "N",
       }));
     test("50° 30′ 36″ S", () =>
-      expect(latitudeToDMSH(-50.51)).toEqual({
+      expect(latitudeToDMS(-50.51)).toEqual({
         degrees: 50,
         minutes: 30,
         seconds: 36,
         hemisphere: "S",
       }));
     test("15.1234° 0′ 0″ S", () =>
-      expect(latitudeToDMSH(-15.1234)).toEqual({
+      expect(latitudeToDMS(-15.1234)).toEqual({
         degrees: 15,
         minutes: 7,
         seconds: 24.24,
         hemisphere: "S",
       }));
     test("60° 10′ 48″ N", () =>
-      expect(latitudeToDMSH(60.18)).toEqual({
+      expect(latitudeToDMS(60.18)).toEqual({
         degrees: 60,
         minutes: 10,
         seconds: 48,
         hemisphere: "N",
       }));
     test("60° 30′ 0″ N", () =>
-      expect(latitudeToDMSH(60.5)).toEqual({
+      expect(latitudeToDMS(60.5)).toEqual({
         degrees: 60,
         minutes: 30,
         seconds: 0,
         hemisphere: "N",
       }));
     test("20° 15′ 36″ S", () =>
-      expect(latitudeToDMSH(-20.26)).toEqual({
+      expect(latitudeToDMS(-20.26)).toEqual({
         degrees: 20,
         minutes: 15,
         seconds: 36,
@@ -179,31 +179,31 @@ describe("Longitude to decimal", () => {
       expect(longitudeToDecimal(24, 56, 15, "E")).toBe(24.9375));
   });
 });
-describe("Longitude to DMSH", () => {
+describe("Longitude to DMS", () => {
   describe("Extremes", () => {
     test("0° 0′ 0″ E", () =>
-      expect(longitudeToDMSH(0)).toEqual({
+      expect(longitudeToDMS(0)).toEqual({
         degrees: 0,
         minutes: 0,
         seconds: 0,
         hemisphere: "E",
       }));
     test("0° 0′ 0″ W", () =>
-      expect(longitudeToDMSH(-0)).toEqual({
+      expect(longitudeToDMS(-0)).toEqual({
         degrees: 0,
         minutes: 0,
         seconds: 0,
         hemisphere: "W",
       }));
     test("90° 0′ 0″ E", () =>
-      expect(longitudeToDMSH(180)).toEqual({
+      expect(longitudeToDMS(180)).toEqual({
         degrees: 180,
         minutes: 0,
         seconds: 0,
         hemisphere: "E",
       }));
     test("90° 0′ 0″ W", () =>
-      expect(longitudeToDMSH(-180)).toEqual({
+      expect(longitudeToDMS(-180)).toEqual({
         degrees: 180,
         minutes: 0,
         seconds: 0,
@@ -211,40 +211,40 @@ describe("Longitude to DMSH", () => {
       }));
   });
   describe("Excess", () => {
-    test("181° 0′ 0″ E", () => expect(() => longitudeToDMSH(181)).toThrow());
-    test("181° 0′ 0″ W", () => expect(() => longitudeToDMSH(-181)).toThrow());
+    test("181° 0′ 0″ E", () => expect(() => longitudeToDMS(181)).toThrow());
+    test("181° 0′ 0″ W", () => expect(() => longitudeToDMS(-181)).toThrow());
   });
   describe("Examples", () => {
     test("60° 10′ 48″ E", () =>
-      expect(longitudeToDMSH(60.18)).toEqual({
+      expect(longitudeToDMS(60.18)).toEqual({
         degrees: 60,
         minutes: 10,
         seconds: 48,
         hemisphere: "E",
       }));
     test("50° 30.6′ 0″ E", () =>
-      expect(longitudeToDMSH(50.51)).toEqual({
+      expect(longitudeToDMS(50.51)).toEqual({
         degrees: 50,
         minutes: 30,
         seconds: 36,
         hemisphere: "E",
       }));
     test("50° 30′ 36″ W", () =>
-      expect(longitudeToDMSH(-50.51)).toEqual({
+      expect(longitudeToDMS(-50.51)).toEqual({
         degrees: 50,
         minutes: 30,
         seconds: 36,
         hemisphere: "W",
       }));
     test("15.1234° 0′ 0″ W", () =>
-      expect(longitudeToDMSH(-15.1234)).toEqual({
+      expect(longitudeToDMS(-15.1234)).toEqual({
         degrees: 15,
         minutes: 7,
         seconds: 24.24,
         hemisphere: "W",
       }));
     test("24° 56′ 15″ E", () =>
-      expect(longitudeToDMSH(24.9375)).toEqual({
+      expect(longitudeToDMS(24.9375)).toEqual({
         degrees: 24,
         minutes: 56,
         seconds: 15,

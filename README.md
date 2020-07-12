@@ -98,7 +98,7 @@ new GeoCoord(
 ).toDecimal();
 ```
 
-#### toDMSH()
+#### toDMS()
 
 ``` 
 // Returns:
@@ -106,7 +106,7 @@ new GeoCoord(
 //   latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
 //   longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
 // }
-new GeoCoord(0, 0).toDMSH();
+new GeoCoord(0, 0).toDMS();
 
 // Returns:
 //  {
@@ -116,7 +116,7 @@ new GeoCoord(0, 0).toDMSH();
 new GeoCoord(
   { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
   { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-).toDMSH();
+).toDMS();
 ```
 
 ### Conversion Functions
@@ -124,9 +124,9 @@ new GeoCoord(
 ``` 
 const {
   latitudeToDecimal,
-  latitudeToDMSH,
+  latitudeToDMS,
   longitudeToDecimal,
-  longitudeToDMSH,
+  longitudeToDMS,
 } = require("geo-coord");
 
 ```
@@ -160,7 +160,7 @@ latitudeToDecimal(20, 15, 36, "S");
 
 ```
 
-#### latitudeToDMSH(decimalDegrees)
+#### latitudeToDMS(decimalDegrees)
 
 Converts the given latitude coordinates from decimal degrees to degrees, minutes, seconds, and hemisphere. The decimal degrees are expected to be negative for the souther hemisphere, and positive for the northern hemisphere.
 
@@ -172,16 +172,16 @@ The validity of the parameter will be checked, and any value outside of its rang
 
 ``` 
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" }
-latitudeToDMSH(0); 
+latitudeToDMS(0); 
 
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" }
-latitudeToDMSH(-0); 
+latitudeToDMS(-0); 
 
 // Returns: { degrees: 60, minutes: 30, seconds: 0, hemisphere: "N" }
-latitudeToDMSH(60.5); 
+latitudeToDMS(60.5); 
 
 // Returns: { degrees: 20, minutes: 15, seconds: 36, hemisphere: "S" }
-latitudeToDMSH(-20.26); 
+latitudeToDMS(-20.26); 
 
 ```
 
@@ -214,7 +214,7 @@ longitudeToDecimal(20, 15, 36, "W");
 
 ```
 
-#### longitudeToDMSH(decimalDegrees)
+#### longitudeToDMS(decimalDegrees)
 
 Converts the given longitude coordinates from decimal degrees to degrees, minutes, seconds, and hemisphere. The decimal degrees are expected to be negative for the western hemisphere, and positive for the eastern hemisphere.
 
@@ -226,16 +226,16 @@ The validity of the parameter will be checked, and any value outside of its rang
 
 ``` 
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-longitudeToDMSH(0); 
+longitudeToDMS(0); 
 
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" }
-longitudeToDMSH(-0); 
+longitudeToDMS(-0); 
 
 // Returns: { degrees: 60, minutes: 30, seconds: 0, hemisphere: "E" }
-longitudeToDMSH(60.5); 
+longitudeToDMS(60.5); 
 
 // Returns: { degrees: 20, minutes: 15, seconds: 36, hemisphere: "W" }
-longitudeToDMSH(-20.26); 
+longitudeToDMS(-20.26); 
 ```
 
 ## Roadmap

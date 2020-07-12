@@ -2,21 +2,21 @@ const { GeoCoord } = require("../../lib/geo-coord");
 
 describe("To String", () => {
   describe("Origo", () => {
-    test("Object holding DMSH", () =>
+    test("Object holding DMS", () =>
       expect(
         new GeoCoord({
           latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
           longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
         }).toString()
       ).toBe("0°0′0″N 0°0′0″E"));
-    test("DMSH objects", () =>
+    test("DMS objects", () =>
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
         ).toString()
       ).toBe("0°0′0″N 0°0′0″E"));
-    //   test("DMSH values", () =>
+    //   test("DMS values", () =>
     //     expect(new Coordinates(0, 0, 0, "N", 0, 0, 0, "E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
@@ -29,15 +29,15 @@ describe("To String", () => {
       ).toBe("0°0′0″N 0°0′0″E"));
     test("Decimal values", () =>
       expect(new GeoCoord(0, 0).toString()).toBe("0°0′0″N 0°0′0″E"));
-    //   test("DMSH string", () =>
+    //   test("DMS string", () =>
     //     expect(new Coordinates("0° 0′ 0″ N 0° 0′ 0″ E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
-    //   test("DMH string", () =>
+    //   test("DM string", () =>
     //     expect(new Coordinates("0° 0′ N 0° 0′ E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
-    //   test("DH string", () =>
+    //   test("D string", () =>
     //     expect(new Coordinates("0° N 0° E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
@@ -122,13 +122,13 @@ describe("To Decimal", () => {
       )
     ).toEqual({ latitude: 33.583333, longitude: 130.4 }));
 });
-describe("To DMSH", () => {
+describe("To DMS", () => {
   test("0°0′0″N 0°0′0″E", () =>
     expect(
       new GeoCoord(
         { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-      ).toDMSH()
+      ).toDMS()
     ).toEqual({
       latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
       longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -138,7 +138,7 @@ describe("To DMSH", () => {
       new GeoCoord(
         { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
         { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-      ).toDMSH()
+      ).toDMS()
     ).toEqual({
       latitude: { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
       longitude: { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
@@ -148,7 +148,7 @@ describe("To DMSH", () => {
       new GeoCoord(
         { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
         { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
-      ).toDMSH()
+      ).toDMS()
     ).toEqual({
       latitude: { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
       longitude: { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" },
@@ -158,7 +158,7 @@ describe("To DMSH", () => {
       new GeoCoord(
         { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
         { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
-      ).toDMSH()
+      ).toDMS()
     ).toEqual({
       latitude: { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
       longitude: { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" },
