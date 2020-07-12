@@ -1,53 +1,50 @@
 const {
-  latitudeToDecimal,
+  latitudeToDD,
   latitudeToDMS,
-  longitudeToDecimal,
+  longitudeToDD,
   longitudeToDMS,
 } = require("../../lib/convert");
 
-describe("Latitude to decimal", () => {
+describe("Latitude to DD", () => {
   describe("Extremes", () => {
-    test("0° 0′ 0″ N", () => expect(latitudeToDecimal(0, 0, 0, "N")).toBe(0));
-    test("0° 0′ 0″ S", () => expect(latitudeToDecimal(0, 0, 0, "S")).toBe(-0));
-    test("90° 0′ 0″ N", () =>
-      expect(latitudeToDecimal(90, 0, 0, "N")).toBe(90));
-    test("90° 0′ 0″ S", () =>
-      expect(latitudeToDecimal(90, 0, 0, "S")).toBe(-90));
+    test("0° 0′ 0″ N", () => expect(latitudeToDD(0, 0, 0, "N")).toBe(0));
+    test("0° 0′ 0″ S", () => expect(latitudeToDD(0, 0, 0, "S")).toBe(-0));
+    test("90° 0′ 0″ N", () => expect(latitudeToDD(90, 0, 0, "N")).toBe(90));
+    test("90° 0′ 0″ S", () => expect(latitudeToDD(90, 0, 0, "S")).toBe(-90));
   });
 
   describe("Excess", () => {
     test("91° 0′ 0″ N", () =>
-      expect(() => latitudeToDecimal(91, 0, 0, "N")).toThrow());
+      expect(() => latitudeToDD(91, 0, 0, "N")).toThrow());
     test("91° 0′ 0″ N", () =>
-      expect(() => latitudeToDecimal(91, 0, 0, "S")).toThrow());
+      expect(() => latitudeToDD(91, 0, 0, "S")).toThrow());
     test("0° 60′ 0″ N", () =>
-      expect(() => latitudeToDecimal(0, 60, 0, "N")).toThrow());
+      expect(() => latitudeToDD(0, 60, 0, "N")).toThrow());
     test("0° 60′ 0″ N", () =>
-      expect(() => latitudeToDecimal(0, 60, 0, "S")).toThrow());
+      expect(() => latitudeToDD(0, 60, 0, "S")).toThrow());
     test("0° 0′ 60″ N", () =>
-      expect(() => latitudeToDecimal(0, 0, 60, "N")).toThrow());
+      expect(() => latitudeToDD(0, 0, 60, "N")).toThrow());
     test("0° 0′ 60″ N", () =>
-      expect(() => latitudeToDecimal(0, 0, 60, "S")).toThrow());
+      expect(() => latitudeToDD(0, 0, 60, "S")).toThrow());
     test("90° 0′ 0.1″ N", () =>
-      expect(() => latitudeToDecimal(90, 0, 0.1, "N")).toThrow());
+      expect(() => latitudeToDD(90, 0, 0.1, "N")).toThrow());
     test("90° 0′ 0.1″ N", () =>
-      expect(() => latitudeToDecimal(90, 0, 0.1, "S")).toThrow());
+      expect(() => latitudeToDD(90, 0, 0.1, "S")).toThrow());
   });
   describe("Examples", () => {
     test("10° 15′ 0″ N", () =>
-      expect(latitudeToDecimal(10, 15, 0, "N")).toBe(10.25));
+      expect(latitudeToDD(10, 15, 0, "N")).toBe(10.25));
     test("50° 30.6′ 0″ N", () =>
-      expect(latitudeToDecimal(50, 30.6, 0, "N")).toBe(50.51));
+      expect(latitudeToDD(50, 30.6, 0, "N")).toBe(50.51));
     test("50° 30′ 36″ S", () =>
-      expect(latitudeToDecimal(50, 30.6, 0, "S")).toBe(-50.51));
+      expect(latitudeToDD(50, 30.6, 0, "S")).toBe(-50.51));
     test("15.1234° 0′ 0″ S", () =>
-      expect(latitudeToDecimal(15.1234, 0, 0, "S")).toBe(-15.1234));
+      expect(latitudeToDD(15.1234, 0, 0, "S")).toBe(-15.1234));
     test("60° 10′ 15″ N", () =>
-      expect(latitudeToDecimal(60, 10, 48, "N")).toBe(60.18));
-    test("60° 30′ 0″ N", () =>
-      expect(latitudeToDecimal(60, 30, 0, "N")).toBe(60.5));
+      expect(latitudeToDD(60, 10, 48, "N")).toBe(60.18));
+    test("60° 30′ 0″ N", () => expect(latitudeToDD(60, 30, 0, "N")).toBe(60.5));
     test("20° 15′ 36″ S", () =>
-      expect(latitudeToDecimal(20, 15, 36, "S")).toBe(-20.26));
+      expect(latitudeToDD(20, 15, 36, "S")).toBe(-20.26));
   });
 });
 describe("Latitude to DMS", () => {
@@ -137,46 +134,45 @@ describe("Latitude to DMS", () => {
       }));
   });
 });
-describe("Longitude to decimal", () => {
+describe("Longitude to DD", () => {
   describe("Extremes", () => {
-    test("0° 0′ 0″ E", () => expect(longitudeToDecimal(0, 0, 0, "E")).toBe(0));
-    test("0° 0′ 0″ W", () => expect(longitudeToDecimal(0, 0, 0, "W")).toBe(-0));
-    test("180° 0′ 0″ E", () =>
-      expect(longitudeToDecimal(180, 0, 0, "E")).toBe(180));
+    test("0° 0′ 0″ E", () => expect(longitudeToDD(0, 0, 0, "E")).toBe(0));
+    test("0° 0′ 0″ W", () => expect(longitudeToDD(0, 0, 0, "W")).toBe(-0));
+    test("180° 0′ 0″ E", () => expect(longitudeToDD(180, 0, 0, "E")).toBe(180));
     test("180° 0′ 0″ W", () =>
-      expect(longitudeToDecimal(180, 0, 0, "W")).toBe(-180));
+      expect(longitudeToDD(180, 0, 0, "W")).toBe(-180));
   });
 
   describe("Excess", () => {
     test("181° 0′ 0″ E", () =>
-      expect(() => longitudeToDecimal(181, 0, 0, "E")).toThrow());
+      expect(() => longitudeToDD(181, 0, 0, "E")).toThrow());
     test("181° 0′ 0″ W", () =>
-      expect(() => longitudeToDecimal(181, 0, 0, "W")).toThrow());
+      expect(() => longitudeToDD(181, 0, 0, "W")).toThrow());
     test("0° 60′ 0″ E", () =>
-      expect(() => longitudeToDecimal(0, 60, 0, "E")).toThrow());
+      expect(() => longitudeToDD(0, 60, 0, "E")).toThrow());
     test("0° 60′ 0″ W", () =>
-      expect(() => longitudeToDecimal(0, 60, 0, "W")).toThrow());
+      expect(() => longitudeToDD(0, 60, 0, "W")).toThrow());
     test("0° 0′ 60″ E", () =>
-      expect(() => longitudeToDecimal(0, 0, 60, "E")).toThrow());
+      expect(() => longitudeToDD(0, 0, 60, "E")).toThrow());
     test("0° 0′ 60″ W", () =>
-      expect(() => longitudeToDecimal(0, 0, 60, "W")).toThrow());
+      expect(() => longitudeToDD(0, 0, 60, "W")).toThrow());
     test("180° 0′ 0.1″ E", () =>
-      expect(() => longitudeToDecimal(180, 0, 0.1, "E")).toThrow());
+      expect(() => longitudeToDD(180, 0, 0.1, "E")).toThrow());
     test("180° 0′ 0.1″ W", () =>
-      expect(() => longitudeToDecimal(180, 0, 0.1, "W")).toThrow());
+      expect(() => longitudeToDD(180, 0, 0.1, "W")).toThrow());
   });
 
   describe("Examples", () => {
     test("60° 10′ 48″ E", () =>
-      expect(longitudeToDecimal(60, 10, 48, "E")).toBe(60.18));
+      expect(longitudeToDD(60, 10, 48, "E")).toBe(60.18));
     test("50° 30.6′ 0″ E", () =>
-      expect(longitudeToDecimal(50, 30.6, 0, "E")).toBe(50.51));
+      expect(longitudeToDD(50, 30.6, 0, "E")).toBe(50.51));
     test("50° 30′ 36″ W", () =>
-      expect(longitudeToDecimal(50, 30.6, 0, "W")).toBe(-50.51));
+      expect(longitudeToDD(50, 30.6, 0, "W")).toBe(-50.51));
     test("15.1234° 0′ 0″ W", () =>
-      expect(longitudeToDecimal(15.1234, 0, 0, "W")).toBe(-15.1234));
+      expect(longitudeToDD(15.1234, 0, 0, "W")).toBe(-15.1234));
     test("24° 56′ 15″ E", () =>
-      expect(longitudeToDecimal(24, 56, 15, "E")).toBe(24.9375));
+      expect(longitudeToDD(24, 56, 15, "E")).toBe(24.9375));
   });
 });
 describe("Longitude to DMS", () => {

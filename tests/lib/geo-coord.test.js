@@ -20,14 +20,14 @@ describe("To String", () => {
     //     expect(new Coordinates(0, 0, 0, "N", 0, 0, 0, "E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
-    test("Object holding decimals", () =>
+    test("Object holding DD", () =>
       expect(
         new GeoCoord({
           latitude: 0,
           longitude: 0,
         }).toString()
       ).toBe("0°0′0″N 0°0′0″E"));
-    test("Decimal values", () =>
+    test("DD values", () =>
       expect(new GeoCoord(0, 0).toString()).toBe("0°0′0″N 0°0′0″E"));
     //   test("DMS string", () =>
     //     expect(new Coordinates("0° 0′ 0″ N 0° 0′ 0″ E").toString()).toBe(
@@ -41,7 +41,7 @@ describe("To String", () => {
     //     expect(new Coordinates("0° N 0° E").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
-    //   test("Decimal string", () =>
+    //   test("DD string", () =>
     //     expect(new Coordinates("0° 0°").toString()).toBe(
     //       "0° 0′ 0″ N 0° 0′ 0″ E"
     //     ));
@@ -77,7 +77,7 @@ describe("To String", () => {
       ).toBe("33°35′0″N 130°24′0″E"));
   });
 });
-describe("To Decimal", () => {
+describe("To DD", () => {
   const normalizeResult = (coordinates) => {
     const normalize = (value) => Math.round(value * 1000000) / 1000000;
     return {
@@ -91,7 +91,7 @@ describe("To Decimal", () => {
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-        ).toDecimal()
+        ).toDD()
       )
     ).toEqual({ latitude: 0, longitude: 0 }));
   test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
@@ -100,7 +100,7 @@ describe("To Decimal", () => {
         new GeoCoord(
           { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
           { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-        ).toDecimal()
+        ).toDD()
       )
     ).toEqual({ latitude: 60.170833, longitude: 24.9375 }));
   test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
@@ -109,7 +109,7 @@ describe("To Decimal", () => {
         new GeoCoord(
           { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
           { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
-        ).toDecimal()
+        ).toDD()
       )
     ).toEqual({ latitude: 52.083333, longitude: 4.316667 }));
   test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
@@ -118,7 +118,7 @@ describe("To Decimal", () => {
         new GeoCoord(
           { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
           { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
-        ).toDecimal()
+        ).toDD()
       )
     ).toEqual({ latitude: 33.583333, longitude: 130.4 }));
 });
