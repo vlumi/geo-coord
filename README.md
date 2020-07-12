@@ -47,7 +47,7 @@ new GeoCoord({
 new GeoCoord(0, 0)
 ```
 
-### toString()
+#### toString()
 
 Returns the coordinates in a full string representation, in the format:
 
@@ -55,7 +55,7 @@ Returns the coordinates in a full string representation, in the format:
 <d>° <m>′ <s>″ <H> <d>° <m′ <s>″ <E>
 ```
 
-#### Examples
+##### Examples
 
 ``` 
 // Returns: "0° 0′ 0″ N 0° 0′ 0″ E"
@@ -74,7 +74,7 @@ new GeoCoord(
 ).toString();
 ```
 
-### toDecimal()
+#### toDecimal()
 
 Returns the coordinates in decimal degrees, in the format:
 
@@ -85,7 +85,7 @@ Returns the coordinates in decimal degrees, in the format:
 } 
 ```
 
-#### Examples
+##### Examples
 
 ``` 
 // Returns: { latitude: 0, longitude: 0 }
@@ -98,7 +98,7 @@ new GeoCoord(
 ).toDecimal();
 ```
 
-### toDMSH()
+#### toDMSH()
 
 ``` 
 // Returns:
