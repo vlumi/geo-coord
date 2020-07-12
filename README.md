@@ -74,7 +74,7 @@ new GeoCoord(
 ).toString();
 ```
 
-#### toDecimal()
+#### to()
 
 Returns the coordinates in decimal degrees, in the format:
 
@@ -89,13 +89,13 @@ Returns the coordinates in decimal degrees, in the format:
 
 ``` 
 // Returns: { latitude: 0, longitude: 0 }
-new GeoCoord(0, 0).toDecimal();
+new GeoCoord(0, 0).toDD();
 
 // Returns: { latitude: 60.170833333333334, longitude: 24.9375 }
 new GeoCoord(
   { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
   { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-).toDecimal();
+).toDD();
 ```
 
 #### toDMS()
@@ -123,15 +123,15 @@ new GeoCoord(
 
 ``` 
 const {
-  latitudeToDecimal,
+  latitudeToDD,
   latitudeToDMS,
-  longitudeToDecimal,
+  longitudeToDD,
   longitudeToDMS,
 } = require("geo-coord");
 
 ```
 
-#### latitudeToDecimal(degrees, minutes, seconds, hemisphere)
+#### latitudeToDD(degrees, minutes, seconds, hemisphere)
 
 Converts the given latitude coordinate from degrees, minutes, seconds, and hemisphere ("N" or "S") to its decimal representation. The result will be positive for the northern hemisphere, and negative for the southern hemisphere.
 
@@ -147,16 +147,16 @@ The validity of the parameters will be checked, and any values outside of their 
 
 ``` 
 // Returns: 0
-latitudeToDecimal(0, 0, 0, "N"); 
+latitudeToDD(0, 0, 0, "N"); 
 
 // Returns: -0
-latitudeToDecimal(0, 0, 0, "S"); 
+latitudeToDD(0, 0, 0, "S"); 
 
 // Returns: 60.5
-latitudeToDecimal(60, 30, 0, "N"); 
+latitudeToDD(60, 30, 0, "N"); 
 
 // Returns: -20.26
-latitudeToDecimal(20, 15, 36, "S"); 
+latitudeToDD(20, 15, 36, "S"); 
 
 ```
 
@@ -185,7 +185,7 @@ latitudeToDMS(-20.26);
 
 ```
 
-#### longitudeToDecimal(degrees, minutes, seconds, hemisphere)
+#### longitudeToDD(degrees, minutes, seconds, hemisphere)
 
 Converts the given longitude coordinate from degrees, minutes, seconds, and hemisphere ("E" or "W") to its decimal representation. The result will be positive for the eatern hemisphere, and negative for the western hemisphere.
 
@@ -201,16 +201,16 @@ The validity of the parameters will be checked, and any values outside of their 
 
 ``` 
 // Returns: 0
-longitudeToDecimal(0, 0, 0, "E"); 
+longitudeToDD(0, 0, 0, "E"); 
 
 // Returns: -0
-longitudeToDecimal(0, 0, 0, "W"); 
+longitudeToDD(0, 0, 0, "W"); 
 
 // Returns: 60.5
-longitudeToDecimal(60, 30, 0, "E"); 
+longitudeToDD(60, 30, 0, "E"); 
 
 // Returns: -20.26
-longitudeToDecimal(20, 15, 36, "W"); 
+longitudeToDD(20, 15, 36, "W"); 
 
 ```
 
@@ -245,7 +245,5 @@ The goal with the library is to become a more comprehensive library for any calc
 Planned features:
 
 * Convert from (fully or partially) decimal to degrees, minutes, seconds, and hemisphere
-* Full coordinate conversions (latitude + longitude)
-* Formatting to textual presentation
 * Parsing from textual presentation
 * Distance between coordinates
