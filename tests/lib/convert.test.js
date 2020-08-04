@@ -13,7 +13,10 @@ describe("Convert", () => {
       test("90°0′0″N", () => expect(latitudeToDD(90, 0, 0, "N")).toBe(90));
       test("90°0′0″S", () => expect(latitudeToDD(90, 0, 0, "S")).toBe(-90));
     });
-
+    describe("Invalid", () => {
+      test("0°0′0″X", () =>
+        expect(() => latitudeToDD(91, 0, 0, "X")).toThrow());
+    });
     describe("Excess", () => {
       test("91°0′0″N", () =>
         expect(() => latitudeToDD(91, 0, 0, "N")).toThrow());
@@ -141,7 +144,10 @@ describe("Convert", () => {
       test("180°0′0″E", () => expect(longitudeToDD(180, 0, 0, "E")).toBe(180));
       test("180°0′0″W", () => expect(longitudeToDD(180, 0, 0, "W")).toBe(-180));
     });
-
+    describe("Invalid", () => {
+      test("0°0′0″X", () =>
+        expect(() => longitudeToDD(91, 0, 0, "X")).toThrow());
+    });
     describe("Excess", () => {
       test("181°0′0″E", () =>
         expect(() => longitudeToDD(181, 0, 0, "E")).toThrow());
@@ -160,7 +166,6 @@ describe("Convert", () => {
       test("180°0′0.1″W", () =>
         expect(() => longitudeToDD(180, 0, 0.1, "W")).toThrow());
     });
-
     describe("Examples", () => {
       test("60°10′48″E", () =>
         expect(longitudeToDD(60, 10, 48, "E")).toBe(60.18));

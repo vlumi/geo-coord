@@ -60,6 +60,312 @@ describe("GeoCoord", () => {
         ));
     });
   });
+  describe("Round to Degrees", () => {
+    test("0°0′0″N 0°0′0″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+        )
+          .roundToDegrees()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°29′29.999999″N 0°29′29.999999″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 29, seconds: 29.999999, hemisphere: "N" },
+          { degrees: 0, minutes: 29, seconds: 29.999999, hemisphere: "E" }
+        )
+          .roundToDegrees()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°30′0″N 0°30′0″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 30, seconds: 0, hemisphere: "N" },
+          { degrees: 0, minutes: 30, seconds: 0, hemisphere: "E" }
+        )
+          .roundToDegrees()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("89°30′0″N 179°30′0″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 89, minutes: 30, seconds: 0, hemisphere: "N" },
+          { degrees: 179, minutes: 30, seconds: 0, hemisphere: "E" }
+        )
+          .roundToDegrees()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+  });
+  describe("Round to Minutes", () => {
+    test("0°0′0″N 0°0′0″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′29.999999″N 0°0′29.999999″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "E" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′30″N 0°0′30″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "E" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°59′30″N 0°59′30″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "N" },
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "E" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("89°59′30″N 179°59′30″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 89, minutes: 59, seconds: 30, hemisphere: "N" },
+          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "E" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′0″S 0°0′0″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+    test("0°0′29.999999″S 0°0′29.999999″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "W" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+    test("0°0′30″S 0°0′30″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "W" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "W" },
+      }));
+    test("0°59′30″S 0°59′30″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "S" },
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "W" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+    test("89°59′30″S 179°59′30″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 89, minutes: 59, seconds: 30, hemisphere: "S" },
+          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "W" }
+        )
+          .roundToMinutes()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+  });
+  describe("Round to Seconds", () => {
+    test("0°0′0″N 0°0′0″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′0.499999″N 0°0′0.499999″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′0.5″N 0°0′0.5″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "E" },
+      }));
+    test("0°0′59.5″N 0°0′59.5″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "N" },
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°59′59.5″N 0°59′59.5″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "N" },
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("89°59′59.5″N 179°59′59.5″E", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 89, minutes: 59, seconds: 59.5, hemisphere: "N" },
+          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "E" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
+        longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
+      }));
+    test("0°0′0.499999″S 0°0′0.499999″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "W" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+    test("0°0′0.5″S 0°0′0.5″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "W" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "W" },
+      }));
+    test("0°0′59.5″S 0°0′59.5″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "S" },
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "W" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "W" },
+      }));
+    test("0°59′59.5″S 0°59′59.5″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "S" },
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "W" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+    test("89°59′59.5″S 179°59′59.5″W", () =>
+      expect(
+        new GeoCoord(
+          { degrees: 89, minutes: 59, seconds: 59.5, hemisphere: "S" },
+          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "W" }
+        )
+          .roundToSeconds()
+          .toDMS()
+      ).toEqual({
+        latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "S" },
+        longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "W" },
+      }));
+  });
   describe("To DD", () => {
     const normalizeResult = (coordinates) => {
       const normalize = (value) => Math.round(value * 1000000) / 1000000;

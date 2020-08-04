@@ -6,6 +6,7 @@ The current functionality includes:
 
 - Parsing and normalizing coordinate values into decimal degrees
 - Converting the values to normalized DMS (degrees, minutes, seconds) with hemisphere information
+- Rounding the coordinates to a given precision: full degrees, minutes, or seconds
 
 ## Usage
 
@@ -14,6 +15,15 @@ The current functionality includes:
 ```
 const { GeoCoord } = require("geo-coord");
 ```
+
+Methods:
+
+- `toString()` – Return in the format `"0°0′0.00″N 0°0′0.00″E"`
+- `toDD()` – Return in the format `{ latitude: 0.00, longitude: 0.00 }`
+- `toDMS()` – Return in format `{ latitude: { degrees: 0, minutes: 0, seconds: 0.00, hemisphere: "N" }, longitude: { ... } }`
+- `roundToDegrees()` – Return a new object rounded to full degrees.
+- `roundToMinutes()` – Return a new object rounded to full minutes.
+- `roundToSeconds()` – Return a new object rounded to full seconds.
 
 #### Constructing
 
@@ -281,15 +291,21 @@ Planned features:
 
 ## Version History
 
-- 0.1.0 (2020-07-12)
-  - Implement a wrapper class `GeoCoord` for parsing and normalizing the input value, and producing transformed output values.
-  - Converter method updates
-    - New
-      - `latitudeToDMS`
-      - `longitudeToDMS`
-    - Renamed
-      - `latitudeToDecimal` -> `latitudeToDD`
-      - `longitudeToDecimal` -> `longitudeToDD`
+### 0.1.1 (2020-08-04)
+
+- Add rounding methods to `GeoCoord`: `roundToSeconds()`, `roundToMinutes()`, `roundToDegrees()`
+  - These return a new `GeoCoord` object with the coordinates rounded to the precision.
+
+### 0.1.0 (2020-07-12)
+
+- Implement a wrapper class `GeoCoord` for parsing and normalizing the input value, and producing transformed output values.
+- Converter method updates
+  - New
+    - `latitudeToDMS`
+    - `longitudeToDMS`
+  - Renamed
+    - `latitudeToDecimal` -> `latitudeToDD`
+    - `longitudeToDecimal` -> `longitudeToDD`
 - 0.0.2 (2020-07-11)
   - Documentation fixes only
 - 0.0.1 (2020-07-11)

@@ -1,6 +1,6 @@
 {
   "name": "geo-coord",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utilities for geographic coordinate data.",
   "keywords": [
     "geographic",
@@ -18,8 +18,8 @@
   "author": "Ville Misaki",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^7.4.0",
-    "jest": "^26.1.0"
+    "eslint": "^7.6.0",
+    "jest": "^26.2.2"
   },
   "repository": {
     "type": "git",

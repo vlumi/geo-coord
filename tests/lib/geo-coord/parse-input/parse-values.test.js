@@ -227,4 +227,34 @@ describe("Parse values", () => {
         ).toThrow());
     });
   });
+  describe("Invalid DMS value parts", () => {
+    test("Too many parts", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, 0, 0, 0, 0, "N", 0, 0, 0, 0, "E")).toThrow();
+    });
+    test("Too many parts in latitude", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, 0, 0, 0, 0, 0, "N", 0, "E")).toThrow();
+    });
+    test("Too many parts in longitude", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, 0, "N", 0, 0, 0, 0, 0, "E")).toThrow();
+    });
+    test("Excess values after coordinates", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, 0, "N", 0, "E", 0, 0, 0)).toThrow();
+    });
+    test("Objects within coordinates", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, [0], "N", 0, "E")).toThrow();
+    });
+    test("Objects within coordinates", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, [0], "N", 0, "E")).toThrow();
+    });
+    test("Objects within coordinates", () => {
+      const that = { latitude: undefined, longitude: undefined };
+      expect(() => parseValues(that, 0, 0, 0, 0, 0)).toThrow();
+    });
+  });
 });
