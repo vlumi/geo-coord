@@ -285,9 +285,8 @@ The goal with the library is to become a more comprehensive library for any calc
 
 Planned features:
 
-- Convert from (fully or partially) decimal to degrees, minutes, seconds, and hemisphere
-- Parsing from textual presentation
 - Distance between coordinates
+- Coordinate transformations
 
 ## Version History
 
