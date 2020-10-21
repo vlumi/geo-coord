@@ -306,10 +306,14 @@ Planned features:
   - Renamed
     - `latitudeToDecimal` -> `latitudeToDD`
     - `longitudeToDecimal` -> `longitudeToDD`
-- 0.0.2 (2020-07-11)
-  - Documentation fixes only
-- 0.0.1 (2020-07-11)
-  - Initial release
-  - Converter methods only
-    - `latitudeToDecimal`
-    - `longitudeToDecimal`
+
+### 0.0.2 (2020-07-11)
+
+- Documentation fixes only
+
+### 0.0.1 (2020-07-11)
+
+- Initial release
+- Converter methods only
+  - `latitudeToDecimal`
+  - `longitudeToDecimal`
