@@ -1,24 +1,24 @@
 const { GeoCoord } = require("../../../lib/geo-coord/index");
 
 describe("GeoCoord", () => {
-  describe("To String", () => {
+  describe("To DMS String", () => {
     describe("Origo", () => {
       test("Object holding DMS", () =>
         expect(
           new GeoCoord({
             latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
             longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
-          }).toString()
+          }).toDMSString()
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DMS objects", () =>
         expect(
           new GeoCoord(
             { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
             { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-          ).toString()
+          ).toDMSString()
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DMS values", () =>
-        expect(new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E").toString()).toBe(
+        expect(new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E").toDMSString()).toBe(
           "0°0′0″N 0°0′0″E"
         ));
       test("Object holding DD", () =>
@@ -26,37 +26,100 @@ describe("GeoCoord", () => {
           new GeoCoord({
             latitude: 0,
             longitude: 0,
-          }).toString()
+          }).toDMSString()
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DD values", () =>
-        expect(new GeoCoord(0, 0).toString()).toBe("0°0′0″N 0°0′0″E"));
+        expect(new GeoCoord(0, 0).toDMSString()).toBe("0°0′0″N 0°0′0″E"));
       test("DMS string", () =>
-        expect(new GeoCoord("0°0′0″N 0°0′0″E").toString()).toBe(
+        expect(new GeoCoord("0°0′0″N 0°0′0″E").toDMSString()).toBe(
           "0°0′0″N 0°0′0″E"
         ));
       test("DM string", () =>
-        expect(new GeoCoord("0°0′N 0°0′E").toString()).toBe("0°0′0″N 0°0′0″E"));
+        expect(new GeoCoord("0°0′N 0°0′E").toDMSString()).toBe(
+          "0°0′0″N 0°0′0″E"
+        ));
       test("D string", () =>
-        expect(new GeoCoord("0°N 0°E").toString()).toBe("0°0′0″N 0°0′0″E"));
+        expect(new GeoCoord("0°N 0°E").toDMSString()).toBe("0°0′0″N 0°0′0″E"));
       test("DD string", () =>
-        expect(new GeoCoord("0° 0°").toString()).toBe("0°0′0″N 0°0′0″E"));
+        expect(new GeoCoord("0° 0°").toDMSString()).toBe("0°0′0″N 0°0′0″E"));
     });
     describe("Examples", () => {
       test("1°2′3″N 4°5′6″E", () =>
-        expect(new GeoCoord("1°2′3″N 4°5′6″E").toString()).toBe(
+        expect(new GeoCoord("1°2′3″N 4°5′6″E").toDMSString()).toBe(
           "1°2′3″N 4°5′6″E"
         ));
       test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
-        expect(new GeoCoord("60°10′15″N 24°56′15″E").toString()).toBe(
+        expect(new GeoCoord("60°10′15″N 24°56′15″E").toDMSString()).toBe(
           "60°10′15″N 24°56′15″E"
         ));
       test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
-        expect(new GeoCoord("52°5′0″N 4°19′0″E").toString()).toBe(
+        expect(new GeoCoord("52°5′0″N 4°19′0″E").toDMSString()).toBe(
           "52°5′0″N 4°19′0″E"
         ));
       test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
-        expect(new GeoCoord("33°35′0″N 130°24′0″E").toString()).toBe(
+        expect(new GeoCoord("33°35′0″N 130°24′0″E").toDMSString()).toBe(
           "33°35′0″N 130°24′0″E"
+        ));
+    });
+  });
+  describe("To DD String", () => {
+    describe("Origo", () => {
+      test("Object holding DMS", () =>
+        expect(
+          new GeoCoord({
+            latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+            longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+          }).toDDString()
+        ).toBe("0 0"));
+      test("DMS objects", () =>
+        expect(
+          new GeoCoord(
+            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
+            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+          ).toDDString()
+        ).toBe("0 0"));
+      test("DMS values", () =>
+        expect(new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E").toDDString()).toBe(
+          "0 0"
+        ));
+      test("Object holding DD", () =>
+        expect(
+          new GeoCoord({
+            latitude: 0,
+            longitude: 0,
+          }).toDDString()
+        ).toBe("0 0"));
+      test("DD values", () =>
+        expect(new GeoCoord(0, 0).toDDString()).toBe("0 0"));
+      test("DMS string", () =>
+        expect(new GeoCoord("0 0").toDDString()).toBe("0 0"));
+      test("DM string", () =>
+        expect(new GeoCoord("0°0′N 0°0′E").toDDString()).toBe("0 0"));
+      test("D string", () =>
+        expect(new GeoCoord("0°N 0°E").toDDString()).toBe("0 0"));
+      test("DD string", () =>
+        expect(new GeoCoord("0° 0°").toDDString()).toBe("0 0"));
+    });
+    describe("Examples", () => {
+      test("1°2′15″N 4°5′6″E", () =>
+        expect(new GeoCoord("1°2′15″N 4°5′6″E").toDDString()).toBe(
+          "1.0375 4.085"
+        ));
+      test("1°2′15″S 4°5′6″W", () =>
+        expect(new GeoCoord("1°2′15″S 4°5′6″W").toDDString()).toBe(
+          "-1.0375 -4.085"
+        ));
+      test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
+        expect(new GeoCoord("60°10′15″N 24°56′15″E").toDDString()).toBe(
+          "60.170833333333334 24.9375"
+        ));
+      test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
+        expect(new GeoCoord("52°5′0″N 4°19′0″E").toDDString()).toBe(
+          "52.083333333333336 4.316666666666666"
+        ));
+      test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
+        expect(new GeoCoord("33°35′0″N 130°24′0″E").toDDString()).toBe(
+          "33.583333333333336 130.4"
         ));
     });
   });
