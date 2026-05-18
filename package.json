@@ -1,6 +1,6 @@
 {
   "name": "geo-coord",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Utilities for geographic coordinate data.",
   "keywords": [
     "geographic",
@@ -10,16 +10,48 @@
     "coord",
     "conversion"
   ],
-  "main": "index.js",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "test": "jest --verbose",
-    "lint": "eslint ."
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "author": "Ville Misaki",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^7.26.0",
-    "jest": "^26.6.3"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "eslint": "^10.4.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3",
+    "vitest": "^4.1.6"
   },
   "repository": {
     "type": "git",
