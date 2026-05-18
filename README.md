@@ -12,8 +12,8 @@ The current functionality includes:
 
 ### GeoCoord Class
 
-```
-const { GeoCoord } = require("geo-coord");
+```ts
+import { GeoCoord } from "geo-coord";
 ```
 
 Methods:
@@ -31,13 +31,13 @@ The constructor accepts various ways pass the coordinates. The following example
 
 - Pass a string with the DMS latitude and longitude, each token separated by a character, in the respective order:
 
-```
+```ts
 new GeoCoord("0°0′0″N 0°0′0″E");
 ```
 
 - Pass the DMS values of longitude and latitude as discrete values, in the respective order, possibly omitting any unnecessary values from the tail:
 
-```
+```ts
 new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E");
 new GeoCoord(0, "N", 0, 0, "E");
 new GeoCoord(0, "N", 0, "E");
@@ -45,7 +45,7 @@ new GeoCoord(0, "N", 0, "E");
 
 - Pass an object with `latitude` and `longitude` properties holding the DMS values in individual properties:
 
-```
+```ts
 new GeoCoord({
   latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
   longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -54,7 +54,7 @@ new GeoCoord({
 
 - Pass the objects for latitude and longitude as separate parameters, in respective order:
 
-```
+```ts
 new GeoCoord(
   { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
   { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
@@ -63,7 +63,7 @@ new GeoCoord(
 
 - Pass an object with `latitude` and `longitude` properties holding the DD values:
 
-```
+```ts
 new GeoCoord({
   latitude: 0,
   longitude: 0,
@@ -72,7 +72,7 @@ new GeoCoord({
 
 - Pass the DD values for latitude and longitude as separate parameters, in respective order:
 
-```
+```ts
 new GeoCoord(0, 0)
 ```
 
@@ -80,13 +80,13 @@ new GeoCoord(0, 0)
 
 Returns the coordinates in a full string representation, in the format:
 
-```
+```text
 <d>°<m>′<s>″<H> <d>°<m>′<s>″<E>
 ```
 
 ##### Examples
 
-```
+```ts
 // Returns: "0°0′0″N 0°0′0″E"
 new GeoCoord(0, 0).toString();
 
@@ -116,17 +116,16 @@ new GeoCoord(60, 10, 15, "N", 24, 56, 15, "E").toString();
 
 Returns the coordinates in decimal degrees, in the format:
 
-```
+```text
 {
   latitude: <d.d>
   longitude: <d.d>
 }
-
 ```
 
 ##### Examples
 
-```
+```ts
 // Returns: { latitude: 0, longitude: 0 }
 new GeoCoord(0, 0).toDD();
 
@@ -140,7 +139,7 @@ new GeoCoord(
 
 #### toDMS()
 
-```
+```ts
 // Returns:
 //  {
 //   latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
@@ -162,14 +161,13 @@ new GeoCoord(
 
 ### Conversion Functions
 
-```
-const {
+```ts
+import {
   latitudeToDD,
   latitudeToDMS,
   longitudeToDD,
   longitudeToDMS,
-} = require("geo-coord");
-
+} from "geo-coord";
 ```
 
 #### latitudeToDD(degrees, minutes, seconds, hemisphere)
@@ -186,7 +184,7 @@ The validity of the parameters will be checked, and any values outside of their 
 
 ##### Examples
 
-```
+```ts
 // Returns: 0
 latitudeToDD(0, 0, 0, "N");
 
@@ -198,7 +196,6 @@ latitudeToDD(60, 30, 0, "N");
 
 // Returns: -20.26
 latitudeToDD(20, 15, 36, "S");
-
 ```
 
 #### latitudeToDMS(decimalDegrees)
@@ -211,7 +208,7 @@ The validity of the parameter will be checked, and any value outside of its rang
 
 ##### Examples
 
-```
+```ts
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" }
 latitudeToDMS(0);
 
@@ -223,7 +220,6 @@ latitudeToDMS(60.5);
 
 // Returns: { degrees: 20, minutes: 15, seconds: 36, hemisphere: "S" }
 latitudeToDMS(-20.26);
-
 ```
 
 #### longitudeToDD(degrees, minutes, seconds, hemisphere)
@@ -240,7 +236,7 @@ The validity of the parameters will be checked, and any values outside of their 
 
 ##### Examples
 
-```
+```ts
 // Returns: 0
 longitudeToDD(0, 0, 0, "E");
 
@@ -252,7 +248,6 @@ longitudeToDD(60, 30, 0, "E");
 
 // Returns: -20.26
 longitudeToDD(20, 15, 36, "W");
-
 ```
 
 #### longitudeToDMS(decimalDegrees)
@@ -265,7 +260,7 @@ The validity of the parameter will be checked, and any value outside of its rang
 
 ##### Examples
 
-```
+```ts
 // Returns: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
 longitudeToDMS(0);
 
@@ -289,6 +284,15 @@ Planned features:
 - Coordinate transformations
 
 ## Version History
+
+### 0.2.0 (2026-05-18)
+
+- Rewrite the library in TypeScript with full strict mode
+- Publish as a dual ESM/CJS package via `package.json` `exports`; types emitted as `.d.ts` and `.d.cts`
+- Export new public types: `DMS`, `DDCoordinates`, `DMSCoordinates`, `Hemisphere`, `LatitudeHemisphere`, `LongitudeHemisphere`
+- Throw `Error` instances instead of string literals on invalid input
+- Require Node.js 20 or later
+- Tooling: replace Jest with Vitest, migrate ESLint to flat config, build with tsup, add GitHub Actions CI on Node 20/22/24/26
 
 ### 0.1.1 (2020-08-04)
 
