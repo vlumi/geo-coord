@@ -55,6 +55,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "github:vlumi/geo-coord"
+    "url": "git+https://github.com/vlumi/geo-coord.git"
   }
 }
