@@ -283,40 +283,6 @@ Planned features:
 - Distance between coordinates
 - Coordinate transformations
 
-## Version History
+## Changelog
 
-### 0.2.0 (2026-05-18)
-
-- Rewrite the library in TypeScript with full strict mode
-- Publish as a dual ESM/CJS package via `package.json` `exports`; types emitted as `.d.ts` and `.d.cts`
-- Export new public types: `DMS`, `DDCoordinates`, `DMSCoordinates`, `Hemisphere`, `LatitudeHemisphere`, `LongitudeHemisphere`
-- Throw `Error` instances instead of string literals on invalid input
-- Require Node.js 20 or later
-- Tooling: replace Jest with Vitest, migrate ESLint to flat config, build with tsup, add GitHub Actions CI on Node 20/22/24/26
-
-### 0.1.1 (2020-08-04)
-
-- Add rounding methods to `GeoCoord`: `roundToSeconds()`, `roundToMinutes()`, `roundToDegrees()`
-  - These return a new `GeoCoord` object with the coordinates rounded to the precision.
-
-### 0.1.0 (2020-07-12)
-
-- Implement a wrapper class `GeoCoord` for parsing and normalizing the input value, and producing transformed output values.
-- Converter method updates
-  - New
-    - `latitudeToDMS`
-    - `longitudeToDMS`
-  - Renamed
-    - `latitudeToDecimal` -> `latitudeToDD`
-    - `longitudeToDecimal` -> `longitudeToDD`
-
-### 0.0.2 (2020-07-11)
-
-- Documentation fixes only
-
-### 0.0.1 (2020-07-11)
-
-- Initial release
-- Converter methods only
-  - `latitudeToDecimal`
-  - `longitudeToDecimal`
+See [CHANGELOG.md](./CHANGELOG.md) for release notes.
