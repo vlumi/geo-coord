@@ -1,9 +1,10 @@
-const {
+import { describe, expect, test } from "vitest";
+import {
   latitudeToDD,
   latitudeToDMS,
   longitudeToDD,
   longitudeToDMS,
-} = require("../../lib/convert");
+} from "../src/convert.js";
 
 describe("Convert", () => {
   describe("Latitude to DD", () => {
@@ -20,19 +21,19 @@ describe("Convert", () => {
     describe("Excess", () => {
       test("91°0′0″N", () =>
         expect(() => latitudeToDD(91, 0, 0, "N")).toThrow());
-      test("91°0′0″N", () =>
+      test("91°0′0″S", () =>
         expect(() => latitudeToDD(91, 0, 0, "S")).toThrow());
       test("0°60′0″N", () =>
         expect(() => latitudeToDD(0, 60, 0, "N")).toThrow());
-      test("0°60′0″N", () =>
+      test("0°60′0″S", () =>
         expect(() => latitudeToDD(0, 60, 0, "S")).toThrow());
       test("0°0′60″N", () =>
         expect(() => latitudeToDD(0, 0, 60, "N")).toThrow());
-      test("0°0′60″N", () =>
+      test("0°0′60″S", () =>
         expect(() => latitudeToDD(0, 0, 60, "S")).toThrow());
       test("90°0′0.1″N", () =>
         expect(() => latitudeToDD(90, 0, 0.1, "N")).toThrow());
-      test("90°0′0.1″N", () =>
+      test("90°0′0.1″S", () =>
         expect(() => latitudeToDD(90, 0, 0.1, "S")).toThrow());
     });
     describe("Examples", () => {
@@ -83,7 +84,7 @@ describe("Convert", () => {
     });
     describe("Excess", () => {
       test("91°0′0″N", () => expect(() => latitudeToDMS(91)).toThrow());
-      test("91°0′0″N", () => expect(() => latitudeToDMS(-91)).toThrow());
+      test("91°0′0″S", () => expect(() => latitudeToDMS(-91)).toThrow());
     });
     describe("Examples", () => {
       test("10°15′0″N", () =>
@@ -142,7 +143,8 @@ describe("Convert", () => {
       test("0°0′0″E", () => expect(longitudeToDD(0, 0, 0, "E")).toBe(0));
       test("0°0′0″W", () => expect(longitudeToDD(0, 0, 0, "W")).toBe(-0));
       test("180°0′0″E", () => expect(longitudeToDD(180, 0, 0, "E")).toBe(180));
-      test("180°0′0″W", () => expect(longitudeToDD(180, 0, 0, "W")).toBe(-180));
+      test("180°0′0″W", () =>
+        expect(longitudeToDD(180, 0, 0, "W")).toBe(-180));
     });
     describe("Invalid", () => {
       test("0°0′0″X", () =>
@@ -195,14 +197,14 @@ describe("Convert", () => {
           seconds: 0,
           hemisphere: "W",
         }));
-      test("90°0′0″E", () =>
+      test("180°0′0″E", () =>
         expect(longitudeToDMS(180)).toEqual({
           degrees: 180,
           minutes: 0,
           seconds: 0,
           hemisphere: "E",
         }));
-      test("90°0′0″W", () =>
+      test("180°0′0″W", () =>
         expect(longitudeToDMS(-180)).toEqual({
           degrees: 180,
           minutes: 0,

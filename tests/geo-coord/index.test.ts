@@ -1,4 +1,5 @@
-const { GeoCoord } = require("../../../lib/geo-coord/index");
+import { describe, expect, test } from "vitest";
+import { GeoCoord } from "../../src/geo-coord/index.js";
 
 describe("GeoCoord", () => {
   describe("To DMS String", () => {
@@ -8,35 +9,35 @@ describe("GeoCoord", () => {
           new GeoCoord({
             latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
             longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
-          }).toDMSString()
+          }).toDMSString(),
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DMS objects", () =>
         expect(
           new GeoCoord(
             { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-          ).toDMSString()
+            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+          ).toDMSString(),
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DMS values", () =>
         expect(new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E").toDMSString()).toBe(
-          "0°0′0″N 0°0′0″E"
+          "0°0′0″N 0°0′0″E",
         ));
       test("Object holding DD", () =>
         expect(
           new GeoCoord({
             latitude: 0,
             longitude: 0,
-          }).toDMSString()
+          }).toDMSString(),
         ).toBe("0°0′0″N 0°0′0″E"));
       test("DD values", () =>
         expect(new GeoCoord(0, 0).toDMSString()).toBe("0°0′0″N 0°0′0″E"));
       test("DMS string", () =>
         expect(new GeoCoord("0°0′0″N 0°0′0″E").toDMSString()).toBe(
-          "0°0′0″N 0°0′0″E"
+          "0°0′0″N 0°0′0″E",
         ));
       test("DM string", () =>
         expect(new GeoCoord("0°0′N 0°0′E").toDMSString()).toBe(
-          "0°0′0″N 0°0′0″E"
+          "0°0′0″N 0°0′0″E",
         ));
       test("D string", () =>
         expect(new GeoCoord("0°N 0°E").toDMSString()).toBe("0°0′0″N 0°0′0″E"));
@@ -46,19 +47,19 @@ describe("GeoCoord", () => {
     describe("Examples", () => {
       test("1°2′3″N 4°5′6″E", () =>
         expect(new GeoCoord("1°2′3″N 4°5′6″E").toDMSString()).toBe(
-          "1°2′3″N 4°5′6″E"
+          "1°2′3″N 4°5′6″E",
         ));
       test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
         expect(new GeoCoord("60°10′15″N 24°56′15″E").toDMSString()).toBe(
-          "60°10′15″N 24°56′15″E"
+          "60°10′15″N 24°56′15″E",
         ));
       test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
         expect(new GeoCoord("52°5′0″N 4°19′0″E").toDMSString()).toBe(
-          "52°5′0″N 4°19′0″E"
+          "52°5′0″N 4°19′0″E",
         ));
       test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
         expect(new GeoCoord("33°35′0″N 130°24′0″E").toDMSString()).toBe(
-          "33°35′0″N 130°24′0″E"
+          "33°35′0″N 130°24′0″E",
         ));
     });
   });
@@ -69,25 +70,22 @@ describe("GeoCoord", () => {
           new GeoCoord({
             latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
             longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
-          }).toDDString()
+          }).toDDString(),
         ).toBe("0 0"));
       test("DMS objects", () =>
         expect(
           new GeoCoord(
             { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-          ).toDDString()
+            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+          ).toDDString(),
         ).toBe("0 0"));
       test("DMS values", () =>
         expect(new GeoCoord(0, 0, 0, "N", 0, 0, 0, "E").toDDString()).toBe(
-          "0 0"
+          "0 0",
         ));
       test("Object holding DD", () =>
         expect(
-          new GeoCoord({
-            latitude: 0,
-            longitude: 0,
-          }).toDDString()
+          new GeoCoord({ latitude: 0, longitude: 0 }).toDDString(),
         ).toBe("0 0"));
       test("DD values", () =>
         expect(new GeoCoord(0, 0).toDDString()).toBe("0 0"));
@@ -103,23 +101,23 @@ describe("GeoCoord", () => {
     describe("Examples", () => {
       test("1°2′15″N 4°5′6″E", () =>
         expect(new GeoCoord("1°2′15″N 4°5′6″E").toDDString()).toBe(
-          "1.0375 4.085"
+          "1.0375 4.085",
         ));
       test("1°2′15″S 4°5′6″W", () =>
         expect(new GeoCoord("1°2′15″S 4°5′6″W").toDDString()).toBe(
-          "-1.0375 -4.085"
+          "-1.0375 -4.085",
         ));
       test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
         expect(new GeoCoord("60°10′15″N 24°56′15″E").toDDString()).toBe(
-          "60.170833333333334 24.9375"
+          "60.170833333333334 24.9375",
         ));
       test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
         expect(new GeoCoord("52°5′0″N 4°19′0″E").toDDString()).toBe(
-          "52.083333333333336 4.316666666666666"
+          "52.083333333333336 4.316666666666666",
         ));
       test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
         expect(new GeoCoord("33°35′0″N 130°24′0″E").toDDString()).toBe(
-          "33.583333333333336 130.4"
+          "33.583333333333336 130.4",
         ));
     });
   });
@@ -128,10 +126,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
         )
           .roundToDegrees()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -140,10 +138,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 29, seconds: 29.999999, hemisphere: "N" },
-          { degrees: 0, minutes: 29, seconds: 29.999999, hemisphere: "E" }
+          { degrees: 0, minutes: 29, seconds: 29.999999, hemisphere: "E" },
         )
           .roundToDegrees()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -152,10 +150,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 30, seconds: 0, hemisphere: "N" },
-          { degrees: 0, minutes: 30, seconds: 0, hemisphere: "E" }
+          { degrees: 0, minutes: 30, seconds: 0, hemisphere: "E" },
         )
           .roundToDegrees()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -164,10 +162,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 89, minutes: 30, seconds: 0, hemisphere: "N" },
-          { degrees: 179, minutes: 30, seconds: 0, hemisphere: "E" }
+          { degrees: 179, minutes: 30, seconds: 0, hemisphere: "E" },
         )
           .roundToDegrees()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -178,10 +176,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -190,10 +188,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "E" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -202,10 +200,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 30, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "E" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "E" },
@@ -214,10 +212,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 59, seconds: 30, hemisphere: "N" },
-          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "E" }
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "E" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -226,10 +224,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 89, minutes: 59, seconds: 30, hemisphere: "N" },
-          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "E" }
+          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "E" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -238,10 +236,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -250,10 +248,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 29.999999, hemisphere: "W" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -262,10 +260,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 30, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 30, hemisphere: "W" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "W" },
@@ -274,10 +272,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 59, seconds: 30, hemisphere: "S" },
-          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "W" }
+          { degrees: 0, minutes: 59, seconds: 30, hemisphere: "W" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -286,10 +284,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 89, minutes: 59, seconds: 30, hemisphere: "S" },
-          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "W" }
+          { degrees: 179, minutes: 59, seconds: 30, hemisphere: "W" },
         )
           .roundToMinutes()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -300,10 +298,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -312,10 +310,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -324,10 +322,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "E" },
@@ -336,10 +334,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "E" }
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "E" },
@@ -348,10 +346,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "N" },
-          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "E" }
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -360,10 +358,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 89, minutes: 59, seconds: 59.5, hemisphere: "N" },
-          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "E" }
+          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "E" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -372,10 +370,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 0.499999, hemisphere: "W" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -384,10 +382,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 0.5, hemisphere: "W" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 0, seconds: 1, hemisphere: "W" },
@@ -396,10 +394,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "S" },
-          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "W" }
+          { degrees: 0, minutes: 0, seconds: 59.5, hemisphere: "W" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 0, minutes: 1, seconds: 0, hemisphere: "W" },
@@ -408,10 +406,10 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "S" },
-          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "W" }
+          { degrees: 0, minutes: 59, seconds: 59.5, hemisphere: "W" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 1, minutes: 0, seconds: 0, hemisphere: "W" },
@@ -420,18 +418,21 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 89, minutes: 59, seconds: 59.5, hemisphere: "S" },
-          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "W" }
+          { degrees: 179, minutes: 59, seconds: 59.5, hemisphere: "W" },
         )
           .roundToSeconds()
-          .toDMS()
+          .toDMS(),
       ).toEqual({
         latitude: { degrees: 90, minutes: 0, seconds: 0, hemisphere: "S" },
         longitude: { degrees: 180, minutes: 0, seconds: 0, hemisphere: "W" },
       }));
   });
   describe("To DD", () => {
-    const normalizeResult = (coordinates) => {
-      const normalize = (value) => Math.round(value * 1000000) / 1000000;
+    const normalizeResult = (coordinates: {
+      latitude: number;
+      longitude: number;
+    }) => {
+      const normalize = (value: number) => Math.round(value * 1000000) / 1000000;
       return {
         latitude: normalize(coordinates.latitude),
         longitude: normalize(coordinates.longitude),
@@ -442,36 +443,36 @@ describe("GeoCoord", () => {
         normalizeResult(
           new GeoCoord(
             { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-          ).toDD()
-        )
+            { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+          ).toDD(),
+        ),
       ).toEqual({ latitude: 0, longitude: 0 }));
     test("Helsinki, Finland: 60°10′15″N 24°56′15″E", () =>
       expect(
         normalizeResult(
           new GeoCoord(
             { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
-            { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-          ).toDD()
-        )
+            { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
+          ).toDD(),
+        ),
       ).toEqual({ latitude: 60.170833, longitude: 24.9375 }));
     test("The Hague, Netherlands: 52°5′N 4°19′E", () =>
       expect(
         normalizeResult(
           new GeoCoord(
             { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
-            { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
-          ).toDD()
-        )
+            { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" },
+          ).toDD(),
+        ),
       ).toEqual({ latitude: 52.083333, longitude: 4.316667 }));
     test("Fukuoka, Japan: 33°35′N 130°24′E", () =>
       expect(
         normalizeResult(
           new GeoCoord(
             { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
-            { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
-          ).toDD()
-        )
+            { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" },
+          ).toDD(),
+        ),
       ).toEqual({ latitude: 33.583333, longitude: 130.4 }));
   });
   describe("To DMS", () => {
@@ -479,8 +480,8 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
-          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" }
-        ).toDMS()
+          { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
+        ).toDMS(),
       ).toEqual({
         latitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 0, minutes: 0, seconds: 0, hemisphere: "E" },
@@ -489,8 +490,8 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
-          { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" }
-        ).toDMS()
+          { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
+        ).toDMS(),
       ).toEqual({
         latitude: { degrees: 60, minutes: 10, seconds: 15, hemisphere: "N" },
         longitude: { degrees: 24, minutes: 56, seconds: 15, hemisphere: "E" },
@@ -499,8 +500,8 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
-          { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" }
-        ).toDMS()
+          { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" },
+        ).toDMS(),
       ).toEqual({
         latitude: { degrees: 52, minutes: 5, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 4, minutes: 19, seconds: 0, hemisphere: "E" },
@@ -509,8 +510,8 @@ describe("GeoCoord", () => {
       expect(
         new GeoCoord(
           { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
-          { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" }
-        ).toDMS()
+          { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" },
+        ).toDMS(),
       ).toEqual({
         latitude: { degrees: 33, minutes: 35, seconds: 0, hemisphere: "N" },
         longitude: { degrees: 130, minutes: 24, seconds: 0, hemisphere: "E" },
