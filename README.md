@@ -7,6 +7,10 @@ The current functionality includes:
 - Parsing and normalizing coordinate values into decimal degrees
 - Converting the values to normalized DMS (degrees, minutes, seconds) with hemisphere information
 - Rounding the coordinates to a given precision: full degrees, minutes, or seconds
+- Spherical geodesy: distance, bearings, destination, midpoint, interpolation along a great circle
+- Longitude utilities: normalizing, shortest difference, and unwrapping or cutting paths at the antimeridian
+- Formatting coordinates as decimal degrees or DMS, with hemisphere letters, words, or signs
+- Compass points for a bearing, with 4, 8, or 16 points
 
 ## Usage
 
@@ -274,13 +278,119 @@ longitudeToDMS(60.5);
 longitudeToDMS(-20.26);
 ```
 
+### Geodesy
+
+```ts
+import {
+  distanceKm,
+  initialBearing,
+  finalBearing,
+  destination,
+  midpoint,
+  interpolate,
+  MEAN_EARTH_RADIUS_KM,
+} from "geo-coord";
+```
+
+All functions take and return `{ latitude, longitude }` objects in decimal degrees and treat the Earth as a sphere. Distances are in kilometres on the IUGG mean radius, 6371.0088 km, exported as `MEAN_EARTH_RADIUS_KM`; pass `{ radiusKm }` as the last argument to `distanceKm` and `destination` to measure on another sphere, such as the WGS84 equatorial radius 6378.137 km. Bearings are degrees clockwise from north in `[0, 360)`.
+
+```ts
+const helsinki = { latitude: 60.1699, longitude: 24.9384 };
+const tokyo = { latitude: 35.6762, longitude: 139.6503 };
+
+// Great-circle distance: about 7818 km
+distanceKm(helsinki, tokyo);
+
+// Bearing when leaving Helsinki, and when arriving in Tokyo
+initialBearing(helsinki, tokyo);
+finalBearing(helsinki, tokyo);
+
+// The point 100 km east of Helsinki
+destination(helsinki, 90, 100);
+
+// Halfway, and a tenth of the way, along the great circle
+midpoint(helsinki, tokyo);
+interpolate(helsinki, tokyo, 0.1);
+```
+
+### Longitude
+
+```ts
+import {
+  normalizeLongitude,
+  longitudeDelta,
+  unwrapPath,
+  splitAtAntimeridian,
+} from "geo-coord";
+```
+
+- `normalizeLongitude(longitude)` – The equivalent longitude in `[-180, 180)`: `190` becomes `-170`, `180` becomes `-180`.
+- `longitudeDelta(from, to)` – The shortest signed way round, positive eastward: from `170` to `-170` is `20`.
+- `unwrapPath(path)` – The path with longitudes shifted by whole turns so that no step jumps across the antimeridian; a crossing continues past ±180°, which most renderers accept for a single ring.
+- `splitAtAntimeridian(path)` – The path cut into pieces at each crossing, each piece ending on its edge and the next starting on the opposite edge at the interpolated latitude; pieces of one point are dropped.
+
+### Formatting
+
+```ts
+import { formatCoordinates, formatLatitude, formatLongitude } from "geo-coord";
+```
+
+```ts
+const tokyo = { latitude: 35.6812, longitude: 139.7671 };
+
+// "35.6812°N 139.7671°E"
+formatCoordinates(tokyo);
+
+// "35.68°N 139.77°E"
+formatCoordinates(tokyo, { precision: 2 });
+
+// "35°40′52″N 139°46′2″E"
+formatCoordinates(tokyo, { style: "dms" });
+
+// "35°40′52.3″N"
+formatLatitude(tokyo.latitude, { style: "dms", precision: 1 });
+
+// "35.6812, 139.7671"
+formatCoordinates(tokyo, { hemisphere: "sign", symbols: { degrees: "" }, separator: ", " });
+
+// "北緯35度40分52秒 東経139度46分2秒"
+formatCoordinates(tokyo, {
+  style: "dms",
+  hemispheres: { N: "北緯", S: "南緯", E: "東経", W: "西経" },
+  hemispherePosition: "before",
+  symbols: { degrees: "度", minutes: "分", seconds: "秒" },
+});
+```
+
+Options:
+
+- `style` – `"dd"` (default) or `"dms"`.
+- `precision` – Decimals of the degrees for `"dd"` (default 4), of the seconds for `"dms"` (default 0). Rounding carries over, so `59.99999` in DMS is `60°0′0″`, and a value that rounds to zero is north or east.
+- `hemisphere` – `"letter"` (default) marks the hemisphere with N, S, E, W; `"sign"` puts a minus on southern and western values instead.
+- `hemispheres` – Replacements for any of the letters, for localized words.
+- `hemispherePosition` – `"after"` (default) or `"before"` the number.
+- `symbols` – Replacements for `°`, `′`, `″`.
+- `separator` – Between latitude and longitude in `formatCoordinates`, a space by default.
+
+Latitudes outside `[-90, 90]` and longitudes outside `[-180, 180]` throw.
+
+### Compass
+
+```ts
+import { compassPoint, compassIndex, COMPASS_POINTS } from "geo-coord";
+```
+
+- `compassPoint(bearing, points = 8)` – The English abbreviation of the nearest of 4, 8, or 16 compass points: `compassPoint(44)` is `"NE"`, `compassPoint(22.5, 16)` is `"NNE"`.
+- `compassIndex(bearing, points = 8)` – The same as an index clockwise from north, for looking up a localized name.
+- `COMPASS_POINTS` – The sixteen abbreviations, clockwise from north.
+
 ## Roadmap
 
 The goal with the library is to become a more comprehensive library for any calculations and manipulations of geological coordinates.
 
 Planned features:
 
-- Distance between coordinates
+- Geodesy on the WGS84 ellipsoid (Vincenty) where the sphere is not accurate enough
 - Coordinate transformations
 
 ## Changelog

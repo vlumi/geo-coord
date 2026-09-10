@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-10
+
+### Added
+
+- Spherical geodesy: `distanceKm`, `initialBearing`, `finalBearing`, `destination`, `midpoint`, `interpolate`, on the IUGG mean radius `MEAN_EARTH_RADIUS_KM` or a radius of your choice
+- Longitude utilities: `normalizeLongitude`, `longitudeDelta`, `unwrapPath`, `splitAtAntimeridian`
+- Formatting: `formatCoordinates`, `formatLatitude`, `formatLongitude` with decimal or DMS style, precision, hemisphere letters, localized words, or signs, and custom symbols
+- Compass points: `compassPoint`, `compassIndex`, `COMPASS_POINTS` for 4, 8, or 16 points
+- Types: `GeodesyOptions`, `FormatOptions`, `CompassPoints`
+
 ## [0.2.0] - 2026-05-18
 
 ### Added
@@ -58,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release with `latitudeToDecimal` and `longitudeToDecimal` conversion functions
 
-[Unreleased]: https://github.com/vlumi/geo-coord/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/vlumi/geo-coord/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/vlumi/geo-coord/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/vlumi/geo-coord/releases/tag/v0.2.0
 [0.1.1]: https://github.com/vlumi/geo-coord/releases/tag/v0.1.1
 [0.1.0]: https://github.com/vlumi/geo-coord/releases/tag/v0.1.0
