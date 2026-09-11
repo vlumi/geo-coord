@@ -73,6 +73,25 @@
   <dl id="dest"></dl>
 </section>
 
+<h2>Bounding box around A</h2>
+<section class="between">
+  <div class="row">
+    <div><label for="radius">Radius, km</label><input id="radius" type="number" min="0" step="1" value="500"></div>
+  </div>
+  <dl id="box"></dl>
+  <p class="note">The smallest latitude/longitude box holding every point within the radius — a cheap prefilter before an exact distance check. Across the antimeridian its west edge is east of its east edge; around a pole it spans all longitudes.</p>
+</section>
+
+<h2>Point C against the path from A to B</h2>
+<section class="between">
+  <div class="row">
+    <div><label for="c">Coordinate of C</label><input id="c" type="text" spellcheck="false" autocomplete="off" value="55.7558, 37.6173"></div>
+  </div>
+  <p class="error" id="c-err"></p>
+  <dl id="track"></dl>
+  <p class="note">Cross-track: how far C is from the great circle through A and B, negative to the left looking from A. Along-track: how far from A the nearest point of that path lies, negative if behind A.</p>
+</section>
+
 <h2>Longitude</h2>
 <section class="between">
   <div class="row">
@@ -85,8 +104,9 @@
 
 <script type="module">
   import {
-    GeoCoord, formatCoordinates, distanceKm, initialBearing, finalBearing, midpoint, destination,
+    parseCoordinates, formatCoordinates, distanceKm, initialBearing, finalBearing, midpoint, destination,
     compassPoint, normalizeLongitude, longitudeDelta, MEAN_EARTH_RADIUS_KM,
+    boundingBox, inBoundingBox, crossTrackDistanceKm, alongTrackDistanceKm, GeoCoord,
   } from "https://cdn.jsdelivr.net/npm/geo-coord@1/dist/index.js";
 
   const $ = (id) => document.getElementById(id);
@@ -103,6 +123,9 @@
     ["35°40′N 139°46′E", "degrees and minutes only"],
     ["64.1466 N, 21.9426 W", "decimal with hemisphere letters"],
     ["N35.6812 E139.7671", "hemisphere first, glued to the number"],
+    ["geo:35.6812,139.7671;u=35", "a geo URI, as in a QR code"],
+    ["-33 52 7.68 151 12 33.48", "signed DMS with no letters"],
+    ["35 40.872 139 46.026", "degrees and decimal minutes, as a GPS shows them"],
     ["0 0", "the origin"],
     ["-90, 180", "the South Pole, on the antimeridian"],
   ];
@@ -118,8 +141,8 @@
   function parse(id) {
     const input = $(id), err = $(`${id}-err`), out = $(`${id}-out`);
     try {
-      const g = new GeoCoord(input.value.trim());
-      const dd = g.toDD();
+      const dd = parseCoordinates(input.value.trim());
+      const g = new GeoCoord(dd);
       input.removeAttribute("aria-invalid"); err.textContent = "";
       out.innerHTML = rows([
         ["decimal", formatCoordinates(dd, { precision: 5 })],
@@ -162,6 +185,33 @@
     } else {
       $("dest").innerHTML = rows([["", "point A needs to parse"]]);
     }
+    if (a) {
+      const km = Number($("radius").value);
+      const box = boundingBox(a, km);
+      const wraps = box.west > box.east;
+      $("box").innerHTML = rows([
+        ["south / north", `${num(box.south, 4)}° / ${num(box.north, 4)}°`],
+        ["west / east", `${num(box.west, 4)}° / ${num(box.east, 4)}°${wraps ? " (wraps the antimeridian)" : ""}`],
+        ["contains B", b ? (inBoundingBox(b, box) ? `yes — ${num(distanceKm(a, b), 1)} km away` : `no — ${num(distanceKm(a, b), 1)} km away`) : "—"],
+      ]);
+    } else {
+      $("box").innerHTML = rows([["", "point A needs to parse"]]);
+    }
+    const cInput = $("c"), cErr = $("c-err");
+    let c = null;
+    try { c = cInput.value.trim() ? parseCoordinates(cInput.value.trim()) : null; cInput.removeAttribute("aria-invalid"); cErr.textContent = ""; }
+    catch (e) { cInput.setAttribute("aria-invalid", "true"); cErr.textContent = `Could not parse: ${e.message.replace(/^Invalid arguments: /, "")}`; }
+    if (a && b && c) {
+      const xt = crossTrackDistanceKm(c, a, b), at = alongTrackDistanceKm(c, a, b);
+      $("track").innerHTML = rows([
+        ["C", formatCoordinates(c, { precision: 4 })],
+        ["cross-track", `${num(xt, 1)} km ${xt < 0 ? "(left of the path)" : "(right of the path)"}`],
+        ["along-track", `${num(at, 1)} km from A${at < 0 ? " (behind A)" : ""} of ${num(distanceKm(a, b), 1)} km`],
+        ["nearest point on path", formatCoordinates(destination(a, initialBearing(a, b), at), { style: "dms", precision: 0 })],
+      ]);
+    } else {
+      $("track").innerHTML = rows([["", "A, B and C all need to parse"]]);
+    }
     const lon = Number($("lon").value);
     $("lon-out").innerHTML = rows([
       ["normalized", `${num(normalizeLongitude(lon), 4)}°`],
@@ -169,7 +219,7 @@
     ]);
   }
 
-  for (const id of ["a", "b", "brg", "dist", "lon"]) $(id).addEventListener("input", update);
+  for (const id of ["a", "b", "c", "brg", "dist", "radius", "lon"]) $(id).addEventListener("input", update);
   update();
 </script>
 </body>
