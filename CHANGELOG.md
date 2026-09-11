@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Parse errors for strings quote the text as typed, e.g. `Invalid arguments: no coordinates in "Tokyo"`, instead of the tokens it fell apart into — which for text without digits or hemisphere letters was nothing at all
+
 ## [1.0.0] - 2026-09-11
 
 First stable release. The exported API is now covered by semantic versioning.

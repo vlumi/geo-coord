@@ -21,10 +21,12 @@ describe("parseCoordinates", () => {
     expect(parseCoordinates(35.6812, 139.7671)).toEqual(tokyo);
     expect(parseCoordinates(35, 40, 52.32, "N", 139, 46, 1.56, "E").longitude).toBeCloseTo(139.7671, 9);
   });
-  test("throws on what it cannot read", () => {
-    expect(() => parseCoordinates("Tokyo")).toThrow(/Invalid arguments/);
-    expect(() => parseCoordinates("")).toThrow();
-    expect(() => parseCoordinates(95, 0)).toThrow();
+  test("throws on what it cannot read, naming the text as typed", () => {
+    expect(() => parseCoordinates("Tokyo")).toThrow("Invalid arguments: no coordinates in \"Tokyo\"");
+    expect(() => parseCoordinates("")).toThrow("no coordinates in \"\"");
+    expect(() => parseCoordinates("N35.6812 139.7671")).toThrow(/^Invalid arguments: "N35\.6812 139\.7671" \(/);
+    expect(() => parseCoordinates("95, 0")).toThrow(/"95, 0" \(.*95/);
+    expect(() => parseCoordinates(95, 0)).toThrow(/Invalid arguments/);
   });
 });
 
