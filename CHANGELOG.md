@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Hemisphere marks as people type them: lowercase letters (`33.8688°s 70.6483°w`) and the English words north/south/east/west in any case
+- `createParser({ hemispheres })`: a parser that also knows the caller's hemisphere words — the same table `formatCoordinates` takes, inverted — so localized output parses back without the library carrying word lists
+
 ### Fixed
+
+- Lowercase hemisphere letters were treated as separators and dropped, so `33.8688°s 70.6483°w` parsed as the northern and eastern point without any error (#38)
 
 - Parse errors for strings quote the text as typed, e.g. `Invalid arguments: no coordinates in "Tokyo"`, instead of the tokens it fell apart into — which for text without digits or hemisphere letters was nothing at all
 

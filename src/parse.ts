@@ -1,4 +1,5 @@
 import parseInput from "./geo-coord/parse-input/index.js";
+import parseString from "./geo-coord/parse-input/parse-string.js";
 import type { Coordinates } from "./types.js";
 
 /**
@@ -20,4 +21,35 @@ export const tryParseCoordinates = (...input: unknown[]): Coordinates | null => 
   } catch {
     return null;
   }
+};
+
+export interface ParseOptions {
+  /**
+   * Hemisphere words in the caller's language, mapped to N, S, E or W — the
+   * same table `formatCoordinates` takes as `hemispheres`, inverted:
+   * `{ 北緯: "N", 南緯: "S", 東経: "E", 西経: "W" }`. Matched whole and
+   * case-insensitively. English letters and words are always understood.
+   */
+  hemispheres?: Readonly<Record<string, "N" | "S" | "E" | "W">>;
+}
+
+/**
+ * A parser that also understands the caller's hemisphere words. The returned
+ * `parse` and `tryParse` take a string; everything else `parseCoordinates`
+ * accepts is language-independent and needs no options.
+ */
+export const createParser = (options: ParseOptions = {}) => {
+  const parse = (input: string): Coordinates => {
+    const sink = { latitude: 0, longitude: 0 };
+    parseString(sink, input, options.hemispheres);
+    return sink;
+  };
+  const tryParse = (input: string): Coordinates | null => {
+    try {
+      return parse(input);
+    } catch {
+      return null;
+    }
+  };
+  return { parse, tryParse };
 };

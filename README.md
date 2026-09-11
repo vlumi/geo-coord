@@ -44,6 +44,9 @@ parseCoordinates("35°40′52″N 139°46′2″E");   // { latitude: 35.68111�
 parseCoordinates("N35.6812 E139.7671");       // hemisphere letters before or after, spaced or glued
 parseCoordinates("-33 52 7.68 151 12 33.48"); // signed DMS, no letters
 parseCoordinates("geo:35.6812,139.7671;u=35"); // RFC 5870 geo URI
+parseCoordinates("33.8688°s 70.6483°w");       // letters in either case, or the English words
+createParser({ hemispheres: { 北緯: "N", 南緯: "S", 東経: "E", 西経: "W" } })
+  .parse("北緯35度40分52秒 東経139度46分2秒");   // your language's words, the formatter's table inverted
 tryParseCoordinates("nowhere");               // null instead of an exception
 ```
 

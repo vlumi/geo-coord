@@ -1,5 +1,6 @@
 export { GeoCoord } from "./geo-coord/index.js";
-export { parseCoordinates, tryParseCoordinates } from "./parse.js";
+export { createParser, parseCoordinates, tryParseCoordinates } from "./parse.js";
+export type { ParseOptions } from "./parse.js";
 export {
   fromLonLat,
   isValidLatitude,

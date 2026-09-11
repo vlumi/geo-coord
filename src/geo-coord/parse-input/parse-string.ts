@@ -13,13 +13,42 @@ const toValue = (token: string): number | string => {
 /** RFC 5870 geo URI: `geo:lat,lon[,altitude][;params]`. Only the two coordinates matter here. */
 const geoURI = /^geo:\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*-?\d+(?:\.\d+)?)?\s*(?:;.*)?$/i;
 
-export default (that: CoordSink, input: string): void => {
+/** The English hemisphere words; other languages come from the caller via `createParser`. */
+const ENGLISH_WORDS: Readonly<Record<string, string>> = { north: "N", south: "S", east: "E", west: "W" };
+
+const escape = (text: string): string => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** A lone hemisphere letter in either case, not part of a longer word: "n35.68", "33.87 s". */
+const loneLetter = /(?<![\p{L}])[nsew](?![\p{L}])/giu;
+
+/**
+ * Hemisphere marks as people actually type them — lowercase letters, the
+ * English words, and any words the caller supplies — become the capital
+ * letters the tokenizer reads. Without this a lowercase "s" was a separator
+ * and the sign silently flipped.
+ */
+export const normalizeHemispheres = (
+  input: string,
+  words: Readonly<Record<string, string>> = {},
+): string => {
+  const table: Record<string, string> = {};
+  for (const [word, letter] of Object.entries({ ...ENGLISH_WORDS, ...words })) {
+    table[word.toLowerCase()] = letter.toUpperCase();
+  }
+  const keys = Object.keys(table).sort((a, b) => b.length - a.length);
+  const pattern = new RegExp(`(?<![\\p{L}])(${keys.map(escape).join("|")})(?![\\p{L}])`, "giu");
+  return input
+    .replace(pattern, (word) => table[word.toLowerCase()] ?? word)
+    .replace(loneLetter, (letter) => letter.toUpperCase());
+};
+
+export default (that: CoordSink, input: string, words?: Readonly<Record<string, string>>): void => {
   const uri = geoURI.exec(input.trim());
   if (uri) {
     parseValues(that, Number(uri[1]), Number(uri[2]));
     return;
   }
-  const splitInput: (number | string)[] = input
+  const splitInput: (number | string)[] = normalizeHemispheres(input, words)
     .split(splitter)
     .filter((value) => value !== "")
     .flatMap((token) => {
