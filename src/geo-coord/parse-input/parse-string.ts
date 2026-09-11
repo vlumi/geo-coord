@@ -37,6 +37,6 @@ export default (that: CoordSink, input: string): void => {
     parseValues(that, ...splitInput);
   } catch (e) {
     const detail = e instanceof Error ? e.message.replace(/^Invalid arguments: /, "") : String(e);
-    throw new Error(`Invalid arguments: ${JSON.stringify(input)} (${detail})`);
+    throw new Error(`Invalid arguments: ${JSON.stringify(input)} (${detail})`, { cause: e });
   }
 };
