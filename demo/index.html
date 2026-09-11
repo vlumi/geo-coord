@@ -113,6 +113,10 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const rows = (pairs) => pairs.map(([k, v]) => `<dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd>`).join("");
   const num = (n, d = 2) => Number(n).toFixed(d);
+  const why = (e) => {
+    const detail = String(e.message).replace(/^Invalid arguments: ?/, "");
+    return detail ? `Could not parse: ${detail}` : "Could not parse: no coordinates found in that text";
+  };
 
   const examples = [
     ["35.6812, 139.7671", "Tokyo Station, decimal with a comma"],
@@ -154,7 +158,7 @@
       return dd;
     } catch (e) {
       input.setAttribute("aria-invalid", "true");
-      err.textContent = input.value.trim() ? `Could not parse: ${e.message.replace(/^Invalid arguments: /, "")}` : "";
+      err.textContent = input.value.trim() ? why(e) : "";
       out.innerHTML = "";
       return null;
     }
@@ -200,7 +204,7 @@
     const cInput = $("c"), cErr = $("c-err");
     let c = null;
     try { c = cInput.value.trim() ? parseCoordinates(cInput.value.trim()) : null; cInput.removeAttribute("aria-invalid"); cErr.textContent = ""; }
-    catch (e) { cInput.setAttribute("aria-invalid", "true"); cErr.textContent = `Could not parse: ${e.message.replace(/^Invalid arguments: /, "")}`; }
+    catch (e) { cInput.setAttribute("aria-invalid", "true"); cErr.textContent = why(e); }
     if (a && b && c) {
       const xt = crossTrackDistanceKm(c, a, b), at = alongTrackDistanceKm(c, a, b);
       $("track").innerHTML = rows([
