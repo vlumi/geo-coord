@@ -59,5 +59,8 @@
     "url": "git+https://github.com/vlumi/geo-coord.git"
   },
   "homepage": "https://vlumi.github.io/geo-coord/demo/",
-  "bugs": "https://github.com/vlumi/geo-coord/issues"
+  "bugs": "https://github.com/vlumi/geo-coord/issues",
+  "overrides": {
+    "esbuild": "^0.28.1"
+  }
 }
