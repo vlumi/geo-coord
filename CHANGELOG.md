@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `parseCoordinates(...)` and `tryParseCoordinates(...)`: the parser as functions, accepting everything the `GeoCoord` constructor does; the second returns `null` instead of throwing
+- geo URIs (RFC 5870): `geo:35.6812,139.7671`, with or without altitude and `;` parameters
+- Signed DMS and DM without hemisphere letters: `-33 52 7.68 151 12 33.48`, `35 40.872 -139 46.026`; a negative degree stands for south or west
+- `Coordinates` as the plain name for `{ latitude, longitude }` (alias of `DDCoordinates`), the `LonLat` tuple type for the `[longitude, latitude]` order GeoJSON and map libraries use, and `fromLonLat` / `toLonLat` between them
+- `isValidLatitude`, `isValidLongitude`
+
+### Fixed
+
+- `latitudeToDMS` and `longitudeToDMS` could return `-0` seconds from floating-point rounding; they also now reject `NaN`
+- Error messages: latitude seconds out of range reported the minutes; `latitudeToDMS` said "Invalid longitude"
+
 ## [0.3.1] - 2026-09-11
 
 ### Added

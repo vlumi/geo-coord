@@ -19,7 +19,7 @@ export const latitudeToDD = (
     throw new Error(`Latitude minutes outside of range: ${minutes}`);
   }
   if (seconds < 0 || seconds >= 60) {
-    throw new Error(`Latitude minutes outside of range: ${minutes}`);
+    throw new Error(`Latitude seconds outside of range: ${seconds}`);
   }
   if (degrees === 90 && (minutes > 0 || seconds > 0)) {
     throw new Error(
@@ -30,8 +30,8 @@ export const latitudeToDD = (
 };
 
 export const latitudeToDMS = (dd: number): DMS<LatitudeHemisphere> => {
-  if (dd < -90 || dd > 90) {
-    throw new Error(`Invalid longitude: ${dd}`);
+  if (!(dd >= -90 && dd <= 90)) {
+    throw new Error(`Invalid latitude: ${dd}`);
   }
   const sign = Math.sign(dd);
   const absDegrees = Math.abs(dd);
@@ -70,22 +70,23 @@ export const longitudeToDD = (
 };
 
 export const longitudeToDMS = (dd: number): DMS<LongitudeHemisphere> => {
-  if (dd < -180 || dd > 180) {
+  if (!(dd >= -180 && dd <= 180)) {
     throw new Error(`Invalid longitude: ${dd}`);
   }
   const sign = Math.sign(dd);
   const absDegrees = Math.abs(dd);
   const degrees = Math.floor(round(absDegrees));
-  const minutes = Math.abs(Math.floor(round(60 * (absDegrees - degrees))));
-  const seconds = Math.abs(round(3600 * (absDegrees - degrees) - 60 * minutes));
+  const minutes = Math.floor(round(60 * (absDegrees - degrees)));
+  const seconds = round(3600 * (absDegrees - degrees) - 60 * minutes);
   const hemisphere: LongitudeHemisphere =
     Object.is(sign, 0) || sign > 0 ? "E" : "W";
   return { degrees, minutes, seconds, hemisphere };
 };
 
+/** To nine decimals, and never -0: a tiny negative from floating point becomes a plain zero. */
 const round = (num: number): number => {
   const PRECISION = 10 ** 9;
-  return Math.round(num * PRECISION) / PRECISION;
+  return Math.round(num * PRECISION) / PRECISION || 0;
 };
 
 const convertToDD = (

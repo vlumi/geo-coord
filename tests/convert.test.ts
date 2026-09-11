@@ -255,3 +255,18 @@ describe("Convert", () => {
     });
   });
 });
+
+describe("Convert: error messages name the right thing", () => {
+  test("latitude seconds", () =>
+    expect(() => latitudeToDD(0, 0, 60, "N")).toThrow(/seconds outside of range: 60/));
+  test("latitude out of range in DMS conversion", () =>
+    expect(() => latitudeToDMS(91)).toThrow(/Invalid latitude: 91/));
+  test("seconds never come out as -0", () => {
+    expect(Object.is(longitudeToDMS(4 + 19 / 60).seconds, -0)).toBe(false);
+    expect(Object.is(latitudeToDMS(52 + 5 / 60).seconds, -0)).toBe(false);
+  });
+  test("NaN is rejected by the DMS conversions", () => {
+    expect(() => latitudeToDMS(Number.NaN)).toThrow(/Invalid latitude/);
+    expect(() => longitudeToDMS(Number.NaN)).toThrow(/Invalid longitude/);
+  });
+});
