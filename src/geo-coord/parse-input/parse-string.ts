@@ -28,5 +28,15 @@ export default (that: CoordSink, input: string): void => {
       // Keep the letter on the side it was written: "N35" leads, "35N" trails.
       return m[1] !== undefined ? [m[1], Number(m[2])] : [Number(m[3]), m[4] as string];
     });
-  parseValues(that, ...splitInput);
+  // Errors name the text as typed, not the tokens it fell apart into — which
+  // for "Tokyo" is nothing at all.
+  if (splitInput.length === 0) {
+    throw new Error(`Invalid arguments: no coordinates in ${JSON.stringify(input)}`);
+  }
+  try {
+    parseValues(that, ...splitInput);
+  } catch (e) {
+    const detail = e instanceof Error ? e.message.replace(/^Invalid arguments: /, "") : String(e);
+    throw new Error(`Invalid arguments: ${JSON.stringify(input)} (${detail})`);
+  }
 };
