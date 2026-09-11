@@ -14,9 +14,13 @@ export {
 } from "./convert.js";
 export {
   MEAN_EARTH_RADIUS_KM,
+  alongTrackDistanceKm,
+  boundingBox,
+  crossTrackDistanceKm,
   destination,
   distanceKm,
   finalBearing,
+  inBoundingBox,
   initialBearing,
   interpolate,
   midpoint,
@@ -37,6 +41,7 @@ export type { FormatOptions } from "./format.js";
 export { COMPASS_POINTS, compassIndex, compassPoint } from "./compass.js";
 export type { CompassPoints } from "./compass.js";
 export type {
+  BoundingBox,
   Coordinates,
   DDCoordinates,
   DMS,

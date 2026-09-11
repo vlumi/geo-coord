@@ -1,5 +1,5 @@
 import { normalizeLongitude } from "./longitude.js";
-import type { DDCoordinates } from "./types.js";
+import type { BoundingBox, DDCoordinates } from "./types.js";
 
 /** IUGG mean Earth radius, the conventional sphere for great-circle work. */
 export const MEAN_EARTH_RADIUS_KM = 6371.0088;
@@ -106,3 +106,78 @@ export const interpolate = (
 /** The point halfway along the great circle between two points. */
 export const midpoint = (from: DDCoordinates, to: DDCoordinates): DDCoordinates =>
   interpolate(from, to, 0.5);
+
+/**
+ * Signed distance from `point` to the great circle through `start` and `end`, in kilometres: negative
+ * to the left of the path (looking from `start` towards `end`), positive to the right.
+ */
+export const crossTrackDistanceKm = (
+  point: DDCoordinates,
+  start: DDCoordinates,
+  end: DDCoordinates,
+  options: GeodesyOptions = {},
+): number => {
+  const δ13 = angularDistance(start, point);
+  const θ13 = initialBearing(start, point) * RAD;
+  const θ12 = initialBearing(start, end) * RAD;
+  return Math.asin(Math.sin(δ13) * Math.sin(θ13 - θ12)) * radius(options);
+};
+
+/**
+ * How far along the great circle from `start` towards `end` the point nearest to `point` lies, in
+ * kilometres: negative if it is behind `start`.
+ */
+export const alongTrackDistanceKm = (
+  point: DDCoordinates,
+  start: DDCoordinates,
+  end: DDCoordinates,
+  options: GeodesyOptions = {},
+): number => {
+  const r = radius(options);
+  const δ13 = angularDistance(start, point);
+  const δxt = crossTrackDistanceKm(point, start, end, options) / r;
+  const ratio = Math.cos(δ13) / Math.cos(δxt);
+  const δat = Math.acos(Math.min(1, Math.max(-1, ratio)));
+  const θ13 = initialBearing(start, point) * RAD;
+  const θ12 = initialBearing(start, end) * RAD;
+  return Math.sign(Math.cos(θ13 - θ12)) * δat * r;
+};
+
+/**
+ * The smallest latitude/longitude box holding every point within `distance` kilometres of `center`.
+ * Near a pole the box reaches the pole and spans all longitudes; across the antimeridian `west` is
+ * greater than `east`, meaning the box wraps. Use `inBoundingBox` to test points against it, or its
+ * edges as a cheap prefilter before an exact `distanceKm`.
+ */
+export const boundingBox = (
+  center: DDCoordinates,
+  distance: number,
+  options: GeodesyOptions = {},
+): BoundingBox => {
+  const δ = (distance / radius(options)) * DEG;
+  const south = center.latitude - δ;
+  const north = center.latitude + δ;
+  if (north >= 90 || south <= -90) {
+    return { south: Math.max(-90, south), west: -180, north: Math.min(90, north), east: 180 };
+  }
+  const Δλ = Math.asin(Math.sin(δ * RAD) / Math.cos(center.latitude * RAD)) * DEG;
+  if (!Number.isFinite(Δλ) || Δλ >= 180) {
+    return { south, west: -180, north, east: 180 };
+  }
+  return {
+    south,
+    west: normalizeLongitude(center.longitude - Δλ),
+    north,
+    east: normalizeLongitude(center.longitude + Δλ),
+  };
+};
+
+/** Whether a point lies in a bounding box, including one that wraps the antimeridian (`west` > `east`). */
+export const inBoundingBox = (
+  { latitude, longitude }: DDCoordinates,
+  { south, west, north, east }: BoundingBox,
+): boolean => {
+  if (latitude < south || latitude > north) return false;
+  const λ = normalizeLongitude(longitude);
+  return west <= east ? λ >= west && λ <= east : λ >= west || λ <= east;
+};

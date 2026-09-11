@@ -29,3 +29,14 @@ export interface CoordSink {
   latitude: number;
   longitude: number;
 }
+
+/**
+ * A latitude/longitude box. `west` greater than `east` means the box wraps the antimeridian;
+ * `west` -180 and `east` 180 means all longitudes.
+ */
+export interface BoundingBox {
+  south: number;
+  west: number;
+  north: number;
+  east: number;
+}
