@@ -57,5 +57,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vlumi/geo-coord.git"
-  }
+  },
+  "homepage": "https://vlumi.github.io/geo-coord/demo/",
+  "bugs": "https://github.com/vlumi/geo-coord/issues"
 }
