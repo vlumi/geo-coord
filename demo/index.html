@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>geo-coord demo</title>
+<style>
+  :root { --ink: #222; --muted: #666; --rule: #ddd; --accent: #8c2233; --card: #fff; --bg: #faf6f4; --bad: #a33; }
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 60rem; margin: 2rem auto; padding: 0 1rem; color: var(--ink); background: var(--bg); }
+  h1 { font-size: 1.4rem; margin-bottom: .2rem; } h2 { font-size: 1.05rem; margin: 2rem 0 .6rem; }
+  p { margin: .4rem 0; } a { color: var(--accent); }
+  .note { color: var(--muted); font-size: .9rem; }
+  code, .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  code { background: #eee; padding: .1em .3em; border-radius: 4px; }
+  .points { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  .point { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 1rem; }
+  .point h3 { margin: 0 0 .5rem; font-size: 1rem; }
+  label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .25rem; }
+  input[type=text], input[type=number] { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem .6rem; border: 1px solid var(--rule); border-radius: 6px; background: #fff; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  input[aria-invalid=true] { border-color: var(--bad); }
+  .error { color: var(--bad); font-size: .9rem; min-height: 1.3em; margin: .3rem 0 0; }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: .25rem .9rem; margin: .8rem 0 0; font-size: .95rem; }
+  dt { color: var(--muted); } dd { margin: 0; }
+  .examples { display: flex; flex-wrap: wrap; gap: .4rem .6rem; margin: .5rem 0 0; }
+  .ex { display: inline-flex; align-items: center; gap: .3rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--card); padding: .15rem .3rem .15rem .7rem; font-size: .88rem; }
+  .ex button { font: inherit; font-size: .75rem; border: 1px solid var(--rule); background: #f4f4f4; border-radius: 999px; padding: 0 .5rem; cursor: pointer; }
+  .ex button:hover { border-color: var(--accent); color: var(--accent); }
+  .ex .where { color: var(--muted); }
+  .between { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 1rem; }
+  .row { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); align-items: end; }
+  footer { margin-top: 2.5rem; color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<h1>geo-coord</h1>
+<p>Coordinates for TypeScript: parse any common notation, format as decimal or DMS, great-circle geodesy, antimeridian-safe paths, compass points.
+<a href="https://www.npmjs.com/package/geo-coord">npm</a> · <a href="https://github.com/vlumi/geo-coord">Source and README</a> · MIT.</p>
+<p class="note">This page runs the published package from jsDelivr. Type or paste a coordinate in either box; everything below updates as you type.</p>
+
+<div class="points">
+  <section class="point">
+    <h3>Point A</h3>
+    <label for="a">Coordinate, in any notation the parser knows</label>
+    <input id="a" type="text" spellcheck="false" autocomplete="off" value="35°40′52″N 139°46′2″E">
+    <p class="error" id="a-err"></p>
+    <dl id="a-out"></dl>
+  </section>
+  <section class="point">
+    <h3>Point B</h3>
+    <label for="b">Coordinate, in any notation the parser knows</label>
+    <input id="b" type="text" spellcheck="false" autocomplete="off" value="60.1699, 24.9384">
+    <p class="error" id="b-err"></p>
+    <dl id="b-out"></dl>
+  </section>
+</div>
+
+<h2>Examples to try</h2>
+<p class="note">Each is a different notation the same parser accepts. Send one to A or B.</p>
+<div class="examples" id="examples"></div>
+
+<h2>Between A and B</h2>
+<section class="between">
+  <dl id="between"></dl>
+</section>
+
+<h2>Destination from A</h2>
+<section class="between">
+  <div class="row">
+    <div><label for="brg">Bearing, degrees clockwise from north</label><input id="brg" type="number" min="0" max="360" step="0.1" value="331.4"></div>
+    <div><label for="dist">Distance, km</label><input id="dist" type="number" min="0" step="1" value="1000"></div>
+  </div>
+  <dl id="dest"></dl>
+</section>
+
+<h2>Longitude</h2>
+<section class="between">
+  <div class="row">
+    <div><label for="lon">Any longitude, even past ±180°</label><input id="lon" type="number" step="0.001" value="190"></div>
+  </div>
+  <dl id="lon-out"></dl>
+</section>
+
+<footer>The library has no dependencies and ships as an ES module with types; see the <a href="https://github.com/vlumi/geo-coord#readme">README</a> for the full API. Distances use the IUGG mean radius, 6371.0088 km, on a sphere.</footer>
+
+<script type="module">
+  import {
+    GeoCoord, formatCoordinates, distanceKm, initialBearing, finalBearing, midpoint, destination,
+    compassPoint, normalizeLongitude, longitudeDelta, MEAN_EARTH_RADIUS_KM,
+  } from "https://cdn.jsdelivr.net/npm/geo-coord@0.3/dist/index.js";
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const rows = (pairs) => pairs.map(([k, v]) => `<dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd>`).join("");
+  const num = (n, d = 2) => Number(n).toFixed(d);
+
+  const examples = [
+    ["35.6812, 139.7671", "Tokyo Station, decimal with a comma"],
+    ["60°10′12″N 24°56′18″E", "Helsinki, DMS with proper symbols"],
+    ["51°30'27\"N 0°7'40\"W", "London, DMS with keyboard quotes"],
+    ["-33.8688 151.2093", "Sydney, signed decimals"],
+    ["35 40 52.3 N 139 46 1.6 E", "bare numbers and letters"],
+    ["35°40′N 139°46′E", "degrees and minutes only"],
+    ["64.1466 N, 21.9426 W", "decimal with hemisphere letters"],
+    ["0 0", "the origin"],
+    ["-90, 180", "the South Pole, on the antimeridian"],
+  ];
+  $("examples").innerHTML = examples.map(([c, where], i) =>
+    `<span class="ex"><span class="mono">${esc(c)}</span><span class="where">— ${esc(where)}</span>` +
+    `<button type="button" data-i="${i}" data-to="a">→ A</button><button type="button" data-i="${i}" data-to="b">→ B</button></span>`).join("");
+  $("examples").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $(b.dataset.to).value = examples[b.dataset.i][0];
+    update();
+  });
+
+  function parse(id) {
+    const input = $(id), err = $(`${id}-err`), out = $(`${id}-out`);
+    try {
+      const g = new GeoCoord(input.value.trim());
+      const dd = g.toDD();
+      input.removeAttribute("aria-invalid"); err.textContent = "";
+      out.innerHTML = rows([
+        ["decimal", formatCoordinates(dd, { precision: 5 })],
+        ["DMS", formatCoordinates(dd, { style: "dms", precision: 1 })],
+        ["to the minute", g.roundToMinutes().toDMSString()],
+        ["signed", formatCoordinates(dd, { hemisphere: "sign", precision: 5, separator: ", " })],
+        ["Japanese", formatCoordinates(dd, { hemispheres: { N: "北緯", S: "南緯", E: "東経", W: "西経" }, hemispherePosition: "before", precision: 4 })],
+      ]);
+      return dd;
+    } catch (e) {
+      input.setAttribute("aria-invalid", "true");
+      err.textContent = input.value.trim() ? `Could not parse: ${e.message.replace(/^Invalid arguments: /, "")}` : "";
+      out.innerHTML = "";
+      return null;
+    }
+  }
+
+  function update() {
+    const a = parse("a"), b = parse("b");
+    if (a && b) {
+      const brg = initialBearing(a, b);
+      $("between").innerHTML = rows([
+        ["distance", `${num(distanceKm(a, b), 1)} km`],
+        ["initial bearing", `${num(brg, 1)}° ${compassPoint(brg, 16)}`],
+        ["final bearing", `${num(finalBearing(a, b), 1)}°`],
+        ["midpoint", formatCoordinates(midpoint(a, b), { style: "dms", precision: 0 })],
+        ["longitude delta", `${num(longitudeDelta(a.longitude, b.longitude), 4)}° (shortest way round)`],
+      ]);
+    } else {
+      $("between").innerHTML = rows([["", "both points need to parse"]]);
+    }
+    if (a) {
+      const brg = Number($("brg").value), km = Number($("dist").value);
+      const d = destination(a, brg, km);
+      $("dest").innerHTML = rows([
+        ["arrives at", formatCoordinates(d, { style: "dms", precision: 0 })],
+        ["decimal", formatCoordinates(d, { precision: 5 })],
+        ["on a sphere of", `${MEAN_EARTH_RADIUS_KM} km radius`],
+      ]);
+    } else {
+      $("dest").innerHTML = rows([["", "point A needs to parse"]]);
+    }
+    const lon = Number($("lon").value);
+    $("lon-out").innerHTML = rows([
+      ["normalized", `${num(normalizeLongitude(lon), 4)}°`],
+      ["shortest delta to A", a ? `${num(longitudeDelta(lon, a.longitude), 4)}°` : "—"],
+    ]);
+  }
+
+  for (const id of ["a", "b", "brg", "dist", "lon"]) $(id).addEventListener("input", update);
+  update();
+</script>
+</body>
+</html>

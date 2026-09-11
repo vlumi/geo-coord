@@ -1,6 +1,9 @@
 # geo-coord
 
 This library contains utilities for managing geographic coordinate values.
+Try it in the [interactive demo](https://vlumi.github.io/geo-coord/demo/):
+paste a coordinate in any notation and see it parsed, formatted, and measured
+against a second point.
 
 The current functionality includes:
 
