@@ -1,0 +1,18 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "site/api",
+  "name": "geo-coord",
+  "readme": "none",
+  "includeVersion": true,
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "categorizeByGroup": true,
+  "navigation": { "includeCategories": true },
+  "navigationLinks": {
+    "Demo": "https://vlumi.github.io/geo-coord/demo/",
+    "npm": "https://www.npmjs.com/package/geo-coord",
+    "GitHub": "https://github.com/vlumi/geo-coord"
+  },
+  "sort": ["alphabetical"]
+}

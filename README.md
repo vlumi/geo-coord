@@ -1,11 +1,29 @@
 # geo-coord
 
-This library contains utilities for managing geographic coordinate values.
-Try it in the [interactive demo](https://vlumi.github.io/geo-coord/demo/):
-paste a coordinate in any notation and see it parsed, formatted, and measured
-against a second point.
+[![npm](https://img.shields.io/npm/v/geo-coord)](https://www.npmjs.com/package/geo-coord)
+[![CI](https://github.com/vlumi/geo-coord/actions/workflows/ci.yml/badge.svg)](https://github.com/vlumi/geo-coord/actions/workflows/ci.yml)
 
-The current functionality includes:
+Coordinates for TypeScript and JavaScript: parse any common notation, format
+as decimal or DMS, great-circle geodesy, antimeridian-safe paths, compass
+points. No dependencies; ES module and CommonJS builds with type declarations.
+
+- [Interactive demo](https://vlumi.github.io/geo-coord/demo/) — paste a coordinate in any notation and see it parsed, formatted, and measured against a second point
+- [API reference](https://vlumi.github.io/geo-coord/api/) — every function and type, generated from the source
+
+```sh
+npm install geo-coord
+```
+
+```ts
+import { parseCoordinates, formatCoordinates, distanceKm } from "geo-coord";
+
+const a = parseCoordinates("35°40′52″N 139°46′2″E");
+const b = parseCoordinates("60.1699, 24.9384");
+formatCoordinates(a, { style: "dms" }); // "35°40′52″N 139°46′2″E"
+distanceKm(a, b);                       // 7822.2
+```
+
+The functionality includes:
 
 - Parsing and normalizing coordinate values into decimal degrees
 - Converting the values to normalized DMS (degrees, minutes, seconds) with hemisphere information
@@ -52,7 +70,7 @@ Methods:
 
 #### Constructing
 
-The constructor accepts various ways pass the coordinates. The following examples all create a GeoCoord object at the origo.
+The constructor accepts various ways to pass the coordinates. The following examples all create a GeoCoord object at the origo.
 
 - Pass a string with the DMS latitude and longitude, each token separated by a character, in the respective order. The hemisphere letter may follow or lead its numbers, spaced or glued:
 
@@ -140,7 +158,7 @@ new GeoCoord("60 10 15 N 24 56 15 E").toString();
 new GeoCoord(60, 10, 15, "N", 24, 56, 15, "E").toString();
 ```
 
-#### to()
+#### toDD()
 
 Returns the coordinates in decimal degrees, in the format:
 
@@ -228,9 +246,9 @@ latitudeToDD(20, 15, 36, "S");
 
 #### latitudeToDMS(decimalDegrees)
 
-Converts the given latitude coordinates from decimal degrees to degrees, minutes, seconds, and hemisphere. The decimal degrees are expected to be negative for the souther hemisphere, and positive for the northern hemisphere.
+Converts the given latitude coordinates from decimal degrees to degrees, minutes, seconds, and hemisphere. The decimal degrees are expected to be negative for the southern hemisphere, and positive for the northern hemisphere.
 
-The validity of the parameter will be checked, and any value outside of its range will result in an error throw:
+The validity of the parameter will be checked, and any value outside of its range will result in an error thrown:
 
 - decimalDegrees: [-90..90]
 
@@ -252,7 +270,7 @@ latitudeToDMS(-20.26);
 
 #### longitudeToDD(degrees, minutes, seconds, hemisphere)
 
-Converts the given longitude coordinate from degrees, minutes, seconds, and hemisphere ("E" or "W") to its decimal representation. The result will be positive for the eatern hemisphere, and negative for the western hemisphere.
+Converts the given longitude coordinate from degrees, minutes, seconds, and hemisphere ("E" or "W") to its decimal representation. The result will be positive for the eastern hemisphere, and negative for the western hemisphere.
 
 The validity of the parameters will be checked, and any values outside of their range will result in an error thrown:
 
@@ -282,7 +300,7 @@ longitudeToDD(20, 15, 36, "W");
 
 Converts the given longitude coordinates from decimal degrees to degrees, minutes, seconds, and hemisphere. The decimal degrees are expected to be negative for the western hemisphere, and positive for the eastern hemisphere.
 
-The validity of the parameter will be checked, and any value outside of its range will result in an error throw:
+The validity of the parameter will be checked, and any value outside of its range will result in an error thrown:
 
 - decimalDegrees: [-180..180]
 
@@ -422,14 +440,26 @@ import { compassPoint, compassIndex, COMPASS_POINTS } from "geo-coord";
 - `compassIndex(bearing, points = 8)` – The same as an index clockwise from north, for looking up a localized name.
 - `COMPASS_POINTS` – The sixteen abbreviations, clockwise from north.
 
-## Roadmap
+## Versioning
 
-The goal with the library is to become a more comprehensive library for any calculations and manipulations of geological coordinates.
+From 1.0.0 the public API — everything exported from the package entry point
+— follows semantic versioning: additions are minor releases, and anything that
+would change existing behaviour or names is a major one. The
+[CHANGELOG](./CHANGELOG.md) lists every release.
 
-Planned features:
+Ideas for later, none of which would break the current API: geodesy on the
+WGS84 ellipsoid where the sphere is not accurate enough, and other notations
+such as geohash or UTM.
 
-- Geodesy on the WGS84 ellipsoid (Vincenty) where the sphere is not accurate enough
-- Coordinate transformations
+## Developing
+
+TypeScript source in `src/`, tests in `tests/` (Vitest, with property-based
+tests via fast-check). `npm test`, `npm run lint`, `npm run typecheck`,
+`npm run build` (tsup → `dist/`), `npm run docs` (typedoc → `site/api`),
+`npm run clean`. The project site (demo and API reference) is built and
+deployed by the Pages workflow on every push to `main`. Releases: bump the
+version, tag `vX.Y.Z`, publish a GitHub release; the workflow publishes to npm
+with provenance and purges the jsDelivr cache.
 
 ## Changelog
 
