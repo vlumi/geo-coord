@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-09-11
+
 ### Added
 
 - Hemisphere marks as people type them: lowercase letters (`33.8688°s 70.6483°w`) and the English words north/south/east/west in any case
