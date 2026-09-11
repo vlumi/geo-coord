@@ -36,10 +36,13 @@ Methods:
 
 The constructor accepts various ways pass the coordinates. The following examples all create a GeoCoord object at the origo.
 
-- Pass a string with the DMS latitude and longitude, each token separated by a character, in the respective order:
+- Pass a string with the DMS latitude and longitude, each token separated by a character, in the respective order. The hemisphere letter may follow or lead its numbers, spaced or glued:
 
 ```ts
 new GeoCoord("0°0′0″N 0°0′0″E");
+new GeoCoord("N0°0′0″ E0°0′0″");
+new GeoCoord("0.0N 0.0E");
+new GeoCoord("N0.0 E0.0");
 ```
 
 - Pass the DMS values of longitude and latitude as discrete values, in the respective order, possibly omitting any unnecessary values from the tail:
