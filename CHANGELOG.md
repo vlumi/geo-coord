@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Hemisphere marks as people type them: lowercase letters (`33.8688°s 70.6483°w`), the words north/south/east/west (and German, French, Finnish and Japanese equivalents such as `東経`), so `formatCoordinates` output with localized hemisphere words parses back
+- Hemisphere marks as people type them: lowercase letters (`33.8688°s 70.6483°w`) and the English words north/south/east/west in any case
+- `createParser({ hemispheres })`: a parser that also knows the caller's hemisphere words — the same table `formatCoordinates` takes, inverted — so localized output parses back without the library carrying word lists
 
 ### Fixed
 
