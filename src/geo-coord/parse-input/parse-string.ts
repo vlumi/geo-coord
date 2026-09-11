@@ -10,7 +10,15 @@ const toValue = (token: string): number | string => {
   return Number.isNaN(n) ? token : n;
 };
 
+/** RFC 5870 geo URI: `geo:lat,lon[,altitude][;params]`. Only the two coordinates matter here. */
+const geoURI = /^geo:\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*-?\d+(?:\.\d+)?)?\s*(?:;.*)?$/i;
+
 export default (that: CoordSink, input: string): void => {
+  const uri = geoURI.exec(input.trim());
+  if (uri) {
+    parseValues(that, Number(uri[1]), Number(uri[2]));
+    return;
+  }
   const splitInput: (number | string)[] = input
     .split(splitter)
     .filter((value) => value !== "")

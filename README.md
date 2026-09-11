@@ -17,6 +17,24 @@ The current functionality includes:
 
 ## Usage
 
+### Parsing as functions
+
+```ts
+import { parseCoordinates, tryParseCoordinates } from "geo-coord";
+
+parseCoordinates("35°40′52″N 139°46′2″E");   // { latitude: 35.68111…, longitude: 139.76722… }
+parseCoordinates("N35.6812 E139.7671");       // hemisphere letters before or after, spaced or glued
+parseCoordinates("-33 52 7.68 151 12 33.48"); // signed DMS, no letters
+parseCoordinates("geo:35.6812,139.7671;u=35"); // RFC 5870 geo URI
+tryParseCoordinates("nowhere");               // null instead of an exception
+```
+
+Both accept everything the `GeoCoord` constructor below accepts. Every other
+function takes and returns `Coordinates`, a `{ latitude, longitude }` object in
+decimal degrees. `fromLonLat([lon, lat])` and `toLonLat(coords)` convert to and
+from the `[longitude, latitude]` tuples GeoJSON and map libraries use;
+`isValidLatitude` and `isValidLongitude` check a number is finite and in range.
+
 ### GeoCoord Class
 
 ```ts

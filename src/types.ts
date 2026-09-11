@@ -14,6 +14,12 @@ export interface DDCoordinates {
   longitude: number;
 }
 
+/** A point as `{ latitude, longitude }` in decimal degrees. The name every function here takes and returns. */
+export type Coordinates = DDCoordinates;
+
+/** A point as `[longitude, latitude]`, the order GeoJSON, MapLibre and deck.gl use. */
+export type LonLat = [longitude: number, latitude: number];
+
 export interface DMSCoordinates {
   latitude: DMS<LatitudeHemisphere>;
   longitude: DMS<LongitudeHemisphere>;

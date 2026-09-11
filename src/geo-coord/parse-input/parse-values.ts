@@ -75,14 +75,39 @@ const parseDMSValues = (that: CoordSink, input: unknown[]): void => {
   that.longitude = longitudeToDD(lon.degrees, lon.minutes, lon.seconds, lon.hemisphere);
 };
 
+/**
+ * Numbers only, no hemisphere letters, split evenly into two components:
+ * `-33 52 7 151 12 33` (DMS) or `-33 52.12 151 12.55` (DM). A negative
+ * leading degree stands for south or west, as in signed decimal degrees.
+ */
+const parseSignedValues = (that: CoordSink, input: number[]): void => {
+  const half = input.length / 2;
+  const component = (values: number[], positive: string, negative: string): [number, number, number, string] => {
+    const [degrees = 0, minutes = 0, seconds = 0] = values;
+    const south = degrees < 0 || Object.is(degrees, -0);
+    return [Math.abs(degrees), minutes, seconds, south ? negative : positive];
+  };
+  that.latitude = latitudeToDD(...component(input.slice(0, half), "N", "S"));
+  that.longitude = longitudeToDD(...component(input.slice(half), "E", "W"));
+};
+
+const allNumbers = (input: unknown[]): input is number[] =>
+  input.every((v) => typeof v === "number");
+
 export default (that: CoordSink, ...input: unknown[]): void => {
   switch (input.length) {
     case 2:
       parseDDValues(that, input);
       break;
     case 4:
-    case 5:
     case 6:
+      if (allNumbers(input)) {
+        parseSignedValues(that, input);
+        break;
+      }
+      parseDMSValues(that, input);
+      break;
+    case 5:
     case 7:
     case 8:
       parseDMSValues(that, input);
