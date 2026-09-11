@@ -48,3 +48,17 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --provenance --access public
+
+      # jsDelivr caches how a version range (@0.3, @latest) resolves for up to
+      # twelve hours per edge, so the demo and CDN users would keep getting the
+      # previous release. Purge the range and exact-version paths for the files
+      # the package ships.
+      - name: Purge jsDelivr
+        run: |
+          v=$(node -p "require('./package.json').version")
+          major_minor=${v%.*}
+          for tag in "$v" "$major_minor" "${v%%.*}" latest; do
+            for f in dist/index.js dist/index.cjs dist/index.d.ts; do
+              curl -fsS "https://purge.jsdelivr.net/npm/geo-coord@$tag/$f" > /dev/null || echo "purge skipped for @$tag/$f"
+            done
+          done
