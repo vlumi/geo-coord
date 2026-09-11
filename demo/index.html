@@ -35,8 +35,8 @@
 <body>
 <h1>geo-coord</h1>
 <p>Coordinates for TypeScript: parse any common notation, format as decimal or DMS, great-circle geodesy, antimeridian-safe paths, compass points.
-<a href="https://www.npmjs.com/package/geo-coord">npm</a> · <a href="https://github.com/vlumi/geo-coord">Source and README</a> · MIT.</p>
-<p class="note">This page runs the published package from jsDelivr. Type or paste a coordinate in either box; everything below updates as you type.</p>
+<a href="../api/">API reference</a> · <a href="https://www.npmjs.com/package/geo-coord">npm</a> · <a href="https://github.com/vlumi/geo-coord">Source and README</a> · MIT.</p>
+<p class="note">This page runs the published package (<code>geo-coord@1</code>) from jsDelivr. Type or paste a coordinate in either box; everything below updates as you type.</p>
 
 <div class="points">
   <section class="point">
@@ -87,7 +87,7 @@
   import {
     GeoCoord, formatCoordinates, distanceKm, initialBearing, finalBearing, midpoint, destination,
     compassPoint, normalizeLongitude, longitudeDelta, MEAN_EARTH_RADIUS_KM,
-  } from "https://cdn.jsdelivr.net/npm/geo-coord@0.3/dist/index.js";
+  } from "https://cdn.jsdelivr.net/npm/geo-coord@1/dist/index.js";
 
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
