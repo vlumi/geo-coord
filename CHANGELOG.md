@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-11
+
 ### Added
 
 - The string parser accepts a hemisphere letter before its numbers as well as after: `N35.6812 E139.7671`, `N 35 40 52 E 139 46 2`, `S33.8688 W151.2093`. A letter glued to its number on either side (`N35.68`, `139.77E`) is split off, so `35.6812N 139.7671E` parses too.
+- An [interactive demo](https://vlumi.github.io/geo-coord/demo/), linked from the README and as the package homepage: parse a coordinate in any notation, see it formatted, and measure it against a second point.
 
 ## [0.3.0] - 2026-09-10
 
