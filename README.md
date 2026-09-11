@@ -10,7 +10,7 @@ The current functionality includes:
 - Parsing and normalizing coordinate values into decimal degrees
 - Converting the values to normalized DMS (degrees, minutes, seconds) with hemisphere information
 - Rounding the coordinates to a given precision: full degrees, minutes, or seconds
-- Spherical geodesy: distance, bearings, destination, midpoint, interpolation along a great circle
+- Spherical geodesy: distance, bearings, destination, midpoint, interpolation along a great circle, cross-track and along-track distance from a path, and a bounding box around a radius
 - Longitude utilities: normalizing, shortest difference, and unwrapping or cutting paths at the antimeridian
 - Formatting coordinates as decimal degrees or DMS, with hemisphere letters, words, or signs
 - Compass points for a bearing, with 4, 8, or 16 points
@@ -335,6 +335,20 @@ destination(helsinki, 90, 100);
 // Halfway, and a tenth of the way, along the great circle
 midpoint(helsinki, tokyo);
 interpolate(helsinki, tokyo, 0.1);
+```
+
+```ts
+import { boundingBox, inBoundingBox, crossTrackDistanceKm, alongTrackDistanceKm } from "geo-coord";
+
+// Every point within 50 km of Helsinki lies inside this box — filter with it first,
+// then confirm with distanceKm. `west > east` means the box wraps the antimeridian.
+const box = boundingBox({ latitude: 60.1699, longitude: 24.9384 }, 50);
+inBoundingBox({ latitude: 60.3, longitude: 25.0 }, box); // true
+
+// Signed distance from a point to the great circle through two others: negative is left of the path.
+crossTrackDistanceKm(point, start, end);
+// How far along that path the nearest point lies; negative if behind `start`.
+alongTrackDistanceKm(point, start, end);
 ```
 
 ### Longitude

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Signed DMS and DM without hemisphere letters: `-33 52 7.68 151 12 33.48`, `35 40.872 -139 46.026`; a negative degree stands for south or west
 - `Coordinates` as the plain name for `{ latitude, longitude }` (alias of `DDCoordinates`), the `LonLat` tuple type for the `[longitude, latitude]` order GeoJSON and map libraries use, and `fromLonLat` / `toLonLat` between them
 - `isValidLatitude`, `isValidLongitude`
+- `boundingBox(center, distanceKm)` and `inBoundingBox(point, box)`: the smallest latitude/longitude box around a radius, wrapping the antimeridian and covering the poles correctly, as a cheap prefilter before an exact distance check
+- `crossTrackDistanceKm` and `alongTrackDistanceKm`: a point's signed distance from a great-circle path, and how far along the path its nearest point lies
+- Property-based tests (fast-check): format and parse round-trip in every style, and invariants of the geodesy and longitude functions
 
 ### Fixed
 
