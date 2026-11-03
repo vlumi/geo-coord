@@ -110,7 +110,8 @@ describe("properties: longitude", () => {
         const n = normalizeLongitude(λ);
         expect(n).toBeGreaterThanOrEqual(-180);
         expect(n).toBeLessThan(180);
-        expect(((λ - n) / 360) % 1).toBeCloseTo(0, 6);
+        const turns = (λ - n) / 360;
+        expect(turns - Math.round(turns)).toBeCloseTo(0, 6);
       }),
     ));
 
